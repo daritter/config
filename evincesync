@@ -1,0 +1,109 @@
+#!/usr/bin/env python
+import subprocess
+import os
+import dbus
+import gobject
+from dbus.mainloop.glib import DBusGMainLoop
+
+
+def run(*args):
+    """Simple function to run a program and return its output as list of
+    strings."""
+    proc = subprocess.Popen(args, stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE)
+    stdout, stderr = proc.communicate()
+    retcode = proc.wait()
+    if retcode != 0:
+        raise OSError(retcode, stderr)
+    return [e for e in stdout.strip("\n").split("\n") if len(e) > 0]
+
+
+def call(*args):
+    """Simple wrapper to just call a program and discard its output."""
+    subprocess.call(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+
+
+class VimRemote(object):
+    """Class to simplify opening files in vim."""
+
+    def __init__(self, default=None, highlight=False, tab=True,
+            executable="gvim"):
+        self.default = default
+        self.highlight = highlight
+        self.tab = tab
+        self.executable = executable
+
+    def get_servers(self):
+        """Return list of all running vim servers"""
+        return run(self.executable, "--serverlist")
+
+    def get_files(self):
+        """List all files currently open in all vim servers"""
+        files = []
+        for instance in self.get_servers():
+            buffers = run(self.executable, "--servername", instance,
+                    "--remote-expr", "ListFiles()")
+            for filename in buffers:
+                files.append(filename)
+
+        return files
+
+    def find(self, filename):
+        """Return the vim server which has opened the file if any.
+        If file is not found, default will be returned"""
+        for instance in self.get_servers():
+            buffers = run(self.executable, "--servername", instance,
+                    "--remote-expr", "ListFiles()")
+            if filename in buffers:
+                return instance
+
+        return self.default
+
+    def open(self, filename, line):
+        """Open the file at the given line in VIM.
+        If it is already open in any vim server just bring it to the foreground
+        and jump to the given line.  Otherwise open in the vim server given by
+        default it in a new instance if default is None."""
+
+        filename = os.path.abspath(os.path.expanduser(filename))
+        server = self.find(filename)
+        if server is None:
+            if self.highlight:
+                call(self.executable, "+%d" % line,
+                        "+call Highlight(%d)" % line, filename)
+            else:
+                call(self.executable, "+%d" % line, filename)
+        else:
+            command = self.tab and "--remote-tab-silent" or "--remote-silent"
+            call(self.executable, "--servername", server, command,
+                    "+%d<Enter>" % line, filename)
+            highlight = self.highlight and ("Highlight(%d)" % line) \
+                    or "foreground()"
+            call(self.executable, "--servername", server,
+                    "--remote-expr", highlight)
+
+
+class EvinceListener(object):
+    EV_WINDOW_IFACE = "org.gnome.evince.Window"
+
+    def __init__(self):
+        self._handler = None
+        self._bus = dbus.SessionBus()
+        self._bus.add_signal_receiver(self._on_sync_source,
+                signal_name="SyncSource", dbus_interface=self.EV_WINDOW_IFACE)
+
+    def _on_sync_source(self, input_file, source_link, time):
+        input_file = input_file.replace("file://", "")
+        if self._handler is not None:
+            self._handler(input_file, source_link[0])
+
+    def set_handler(self, handler):
+        self._handler = handler
+
+if __name__ == "__main__":
+    DBusGMainLoop(set_as_default=True)
+    vimr = VimRemote("GVIMTEX")
+    evince = EvinceListener()
+    evince.set_handler(vimr.open)
+    loop = gobject.MainLoop()
+    loop.run()
