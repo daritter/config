@@ -21,9 +21,7 @@ let g:Tex_Env_alertblock = "\\begin{alertblock}{<+title+>}\<CR><++>\<CR>\\end{al
 let g:Tex_FoldedSections=""
 let g:Tex_FoldedEnvironments=""
 let g:Tex_FoldedMisc=""
-
-let tlist_tex_settings   = 'latex;s:sections;g:graphics;l:labels;n:notes'
-let tlist_make_settings  = 'make;m:makros;t:targets'
+setlocal nofoldenable
 
 function! Tex_ForwardSearchLaTeX()
 python << EOF

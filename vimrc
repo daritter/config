@@ -95,17 +95,17 @@ let g:ycm_global_ycm_extra_conf = '~/.vim/ycm_conf.py'
 "let g:ycm_extra_conf_vim_data = ['b:syntastic_cpp_cflags']
 
 "vim airline
-set t_Co=255
+set t_Co=16
 set laststatus=2 guifont=Ubuntu\ Mono\ derivative\ Powerline\ 13
-if has("gui_running")
-    let g:airline_theme='solarized'
-    set background=dark
-    let g:solarized_contrast='normal'
-    let g:solarized_termcolors=255
-    colorscheme solarized
-else
-    let g:airline_theme='bubblegum'
-endif
+"if has("gui_running")
+let g:airline_theme='solarized'
+set background=dark
+let g:solarized_contrast='normal'
+let g:solarized_termcolors=255
+colorscheme solarized
+"else
+"    let g:airline_theme='bubblegum'
+"endif
 highlight! link SignColumn LineNr
 highlight! link SyntasticErrorSign DiffDelete
 highlight! link SyntasticWarningSign DiffChange
@@ -121,6 +121,24 @@ let g:signify_sign_delete_first_line = '‾'
 
 "vim-tagbar
 map <f2> :TagbarToggle<CR>
+let g:tagbar_iconchars = ['▸','▾']
+highlight! link TagbarVisibilityPublic diffAdded
+highlight! link TagbarVisibilityProtected Type
+highlight! link TagbarVisibilityPrivate Special
+highlight! link TagbarSignature Comment
+let g:tagbar_type_tex = {
+    \ 'ctagstype' : 'latex',
+    \ 'kinds'     : [
+        \ 's:sections:0:0',
+        \ 'g:graphics:1:0',
+        \ 'l:labels:1:0',
+        \ 'r:refs:1:0',
+        \ 'p:pagerefs:1:0'
+    \ ],
+    \ 'sort'    : 0,
+    \ 'kind2scope': {},
+    \ 'scope2kind': {},
+\ }
 
 "treat SConstruct/SConscript as python
 autocmd BufReadPre SCons* set filetype=python

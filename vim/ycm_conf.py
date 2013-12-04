@@ -11,11 +11,15 @@ flags = [
     '-std=c++11',
 ]
 
-rconf = subprocess.Popen(["root-config", "--cflags"], stdout=subprocess.PIPE,
-                         stderr=subprocess.PIPE)
-rout = rconf.communicate()[0]
-if rconf.wait() == 0:
-    flags += rout.strip().split()
+try:
+    rconf = subprocess.Popen(["root-config", "--cflags"],
+                             stdout=subprocess.PIPE,
+                             stderr=subprocess.PIPE)
+    rout = rconf.communicate()[0]
+    if rconf.wait() == 0:
+        flags += rout.strip().split()
+except OSError:
+    pass
 
 belle_top_dir = os.environ.get("BELLE_TOP_DIR", "/belle/belle/b20090127_0910")
 if os.path.exists(belle_top_dir):
