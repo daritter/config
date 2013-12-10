@@ -14,16 +14,17 @@ export LC_TELEPHONE="en_US.UTF-8"
 export LC_MEASUREMENT="en_DK.UTF-8"
 export LC_IDENTIFICATION="en_US.UTF-8"
 
-# don't put duplicate lines in the history. See bash(1) for more options
-export HISTCONTROL=ignoredups
-export WORK=~/work
-export OPT=~/local
-export PATH=$WORK/bin:$OPT/bin:$PATH
-export LD_LIBRARY_PATH=$WORK/lib:$OPT/lib:$LD_LIBRARY_PATH
-export PYTHONPATH=$WORK/python
-export TEXMFHOME=$WORK/texmf
+export SOFTWARE_WORK=~/work
+export SOFTWARE_LOCAL=~/local
+export PATH=$SOFTWARE_WORK/bin:$SOFTWARE_LOCAL/bin:$PATH
+export CLEAN_LD_LIBRARY=$SOFTWARE_WORK/lib:$SOFTWARE_LOCAL/lib:$LD_LIBRARY_PATH
+export LD_LIBRARY_PATH=$CLEAN_LD_LIBRARY
+export PYTHONPATH=$SOFTWARE_WORK/python
+export TEXMFHOME=$SOFTWARE_WORK/texmf
 export EDITOR=vim
 
+# don't put duplicate lines in the history. See bash(1) for more options
+export HISTCONTROL=ignoredups
 # append to the history file, don't overwrite it
 shopt -s histappend
 export HISTSIZE=1000
@@ -80,6 +81,8 @@ export BH=/afs/ipp/mpp/belle
 alias afslogin='klog.afs -principal mritter -cell ipp-garching.mpg.de'
 alias rzg='ssh -Y mritter@mpiui1.t2.rzg.mpg.de'
 alias vnc='xtightvncviewer -encodings "copyrect tight hextile  zlib  corre  rre raw"'
+alias gvim='LD_LIBRARY_PATH=$CLEAN_LD_LIBRARY gvim'
+alias vim='LD_LIBRARY_PATH=$CLEAN_LD_LIBRARY vim'
 
 function rvim(){ 
 	gvim -c ":RemoteOpen $1"
