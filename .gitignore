@@ -34,3 +34,7 @@ nosetests.xml
 .mr.developer.cfg
 .project
 .pydevproject
+
+# vim bundles and tmp files
+/vim/bundle
+/vim/tmp
