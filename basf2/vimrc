@@ -1,0 +1,125 @@
+
+python << EOF
+import os
+import vim
+
+head_template = """
+/**************************************************************************
+ * BASF2 (Belle Analysis Framework 2)                                     *
+ * Copyright(C) 2010 - Belle II Collaboration                             *
+ *                                                                        *
+ * Author: The Belle II Collaboration                                     *
+ * Contributors:                                                          *
+ *                                                                        *
+ * This software is provided "as is" without any warranty.                *
+ **************************************************************************/
+""".strip().split('\n')
+
+local_dir = os.environ.get("BELLE2_LOCAL_DIR", vim.eval("expand('<sfile>:p:h')"))
+
+def filename(name):
+    name = os.path.relpath(name, local_dir).replace("include/","").replace("src/","")
+    return name
+
+def move(lines=0,rows=0):
+    pos = vim.current.window.cursor
+    vim.current.window.cursor = (pos[0]+lines,pos[1]+rows)
+
+def include_guard(pos=None):
+    name = filename(vim.current.buffer.name)
+    name = name.upper().replace("/","_").replace(".","_")
+
+    w = vim.current.window
+    b = vim.current.buffer
+    if pos is None: pos = w.cursor
+    b.append(["#pragma once","#ifndef %s" % name, "#define %s" % name],pos[0])
+    b.append(["#endif // %s" % name])
+    move(3)
+
+def check_author():
+    w = vim.current.window
+    b = vim.current.buffer
+
+    if b[0]!=head_template[0]:
+        b.append(head_template+[""],0)
+        move(len(head_template)+1)
+
+    start = -1
+    end = -1
+    contributors = []
+    for i in range(len(b)):
+        if b[i].find("Contributors:")>=0: start=i
+        if b[i] == head_template[-2]:
+            end = i
+            break
+
+        if start>=0:
+            row = b[i].replace("Contributors:","").strip("* \t\r\n")
+            if not row: continue
+            for c in row.split(","):
+                if c.strip(): contributors.append(c.strip())
+
+    if "Martin Ritter" not in contributors:
+        contributors.append("Martin Ritter")
+
+    conlist = [" * Contributors: "]
+    first = True
+    for c in contributors:
+        if len(c)+len(conlist[-1])>73:
+            conlist[-1] = conlist[-1].ljust(74) + "*"
+            conlist.append(" *               ")
+            first = True
+        if not first: conlist[-1] += ", "
+        first = False
+        conlist[-1] += c
+    conlist[-1] = conlist[-1].ljust(74) + "*"
+    conlist.append(" *" + " "*72 + "*")
+    b[start:end] = conlist
+
+def create_namespace():
+    b = vim.current.buffer
+    b.append(["","namespace Belle2 {"],0)
+    move(2)
+    b.append(["} //Belle2 namespace"])
+
+def create_include():
+    create_namespace()
+    include_guard((0,0))
+    check_author()
+
+def create_source():
+    b = vim.current.buffer
+    create_namespace()
+    name = filename(b.name)
+    header = os.path.splitext(name)[0]+".h"
+    b.append(["#include <%s>" %header],0)
+    move(1)
+    check_author()
+
+def set_path():
+    """Set the include path for Syntastic to be able to check the code."""
+    b2dir = os.environ.get("BELLE2_LOCAL_DIR",None)
+    if not b2dir:
+        print "Belle2 not set up correctly."
+        return
+
+    b2ext = os.environ["BELLE2_EXTERNALS_DIR"]
+    subdir = os.environ.get('BELLE2_EXTERNALS_SUBDIR', os.environ['BELLE2_SUBDIR'])
+
+    flags = ["-std=c++11", "-I%s/include" % b2dir]
+    for ext in ["", "CLHEP", "Geant4", "vgm", "genfit", "HepMC", "pythia", "Photos", "Tauola", "evtgen", "FLC", "Eigen"]:
+        flags.append("-I%s/include/%s" % (b2ext, ext))
+    flags.append("-I" + os.path.join(b2ext,"root", subdir ,"include"))
+    vim.command("let b:syntastic_cpp_cflags = '%s'" % " ".join(flags))
+
+set_path()
+EOF
+
+augroup belle2
+    au!
+    au BufNewFile $BELLE2_LOCAL_DIR/*.cc exec "py create_source()"
+    au BufNewFile $BELLE2_LOCAL_DIR/*.h exec "py create_include()"
+    au BufNewFile,BufReadPre $BELLE2_LOCAL_DIR/*.{cc,h} setlocal expandtab shiftwidth=2 softtabstop=2 autoindent cin |
+                \ map <buffer> <F5> :py include_guard()<cr> |
+                \ map <buffer> <F6> :py check_author()<cr>
+augroup END
