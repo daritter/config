@@ -17,8 +17,7 @@ export LC_IDENTIFICATION="en_US.UTF-8"
 export SOFTWARE_WORK=~/work
 export SOFTWARE_LOCAL=~/local
 export PATH=$SOFTWARE_WORK/bin:$SOFTWARE_LOCAL/bin:$PATH
-export CLEAN_LD_LIBRARY=$SOFTWARE_WORK/lib:$SOFTWARE_LOCAL/lib:$LD_LIBRARY_PATH
-export LD_LIBRARY_PATH=$CLEAN_LD_LIBRARY
+export LD_LIBRARY_PATH=$SOFTWARE_WORK/lib:$SOFTWARE_LOCAL/lib:$LD_LIBRARY_PATH
 export PYTHONPATH=$SOFTWARE_WORK/python
 export TEXMFHOME=$SOFTWARE_WORK/texmf
 export EDITOR=vim
@@ -39,12 +38,12 @@ shopt -s checkwinsize
 export LESS="FRSXQ"
 
 function prompt_command () {
-	RETURN=$?
-	if [ $RETURN -ne 0 ]; then
-		echo -e "\nreturncode: \033[0;31m$RETURN\033[00m";
-	fi
-	echo -ne "\033]0;${HOSTNAME}: ${PWD/$HOME/~}\007"
-	return $RETURN
+    RETURN=$?
+    if [ $RETURN -ne 0 ]; then
+        echo -e "\nreturncode: \033[0;31m$RETURN\033[00m";
+    fi
+    echo -ne "\033]0;${HOSTNAME}: ${PWD/$HOME/~}\007"
+    return $RETURN
 }
 case "$TERM" in
 xterm*|rxvt*)
@@ -81,14 +80,8 @@ export BH=/afs/ipp/mpp/belle
 alias afslogin='klog.afs -principal mritter -cell ipp-garching.mpg.de'
 alias rzg='ssh -Y mritter@mpiui1.t2.rzg.mpg.de'
 alias vnc='xtightvncviewer -encodings "copyrect tight hextile  zlib  corre  rre raw"'
-alias gvim='LD_LIBRARY_PATH=$CLEAN_LD_LIBRARY gvim'
-alias vim='LD_LIBRARY_PATH=$CLEAN_LD_LIBRARY vim'
-
-function rvim(){ 
-	gvim -c ":RemoteOpen $1"
-}
 
 function alert(){
-	ssh -Y pcbelle03 "DISPLAY=:0 notify-send -i $([ $? = 0 ] && echo terminal || echo error)\
-		\"$(history|tail -n1| sed -e 's/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//')\""
+    ssh -Y pcbelle03 "DISPLAY=:0 notify-send -u critical -t 1000 -i $([ $? = 0 ] && echo terminal || echo error)\
+                      \"$(history|tail -n1| sed -e 's/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//')\""
 }
