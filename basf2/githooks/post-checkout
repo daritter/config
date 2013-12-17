@@ -1,0 +1,9 @@
+#!/bin/bash
+# Update svn externals after switching branches
+PREVIOUS_HEAD=$1
+NEW_HEAD=$2
+BRANCH_SWITCH=$3
+
+if [ $BRANCH_SWITCH == "1" -a $PREVIOUS_HEAD != $NEW_HEAD ]; then
+  `git rev-parse --show-toplevel`/.git/hooks/svnexternals.py
+fi

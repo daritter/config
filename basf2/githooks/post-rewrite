@@ -1,0 +1,6 @@
+#!/bin/bash
+# Update svn externals after rebase, e.g. git svn rebase
+COMMAND=$1
+if [ $COMMAND == "rebase" ]; then
+  `git rev-parse --show-toplevel`/.git/hooks/svnexternals.py
+fi
