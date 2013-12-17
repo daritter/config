@@ -92,6 +92,7 @@ let g:syntastic_style_warning_symbol = "\ue0b1\ue0b1"
 
 "YouCompleteME
 let g:ycm_global_ycm_extra_conf = '~/.vim/ycm_conf.py'
+let g:ycm_extra_conf_globlist = [resolve(expand('~/basf2/')) . '*']
 "let g:ycm_extra_conf_vim_data = ['b:syntastic_cpp_cflags']
 
 "vim airline
