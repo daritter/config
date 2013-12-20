@@ -27,7 +27,7 @@ def parse_external(line):
     return match.groups()
 
 
-def find_svnrevision():
+def find_svnrevision(commit="HEAD"):
     """Find the svn revision the current branch is based on.
     git-svn history should be very linear but we need to now on which svn
     revision the current branch is based. To do this, we traverse the parents
@@ -35,7 +35,7 @@ def find_svnrevision():
 
     return svn revision or None if none could be found
     """
-    revlist = check_output(["git", "rev-list", "--parents", "HEAD"])
+    revlist = check_output(["git", "rev-list", "--parents", commit])
     for line in revlist.splitlines():
         parents = line.split()
         revision = check_output(["git", "svn", "find-rev", parents[0]])
@@ -47,17 +47,41 @@ def find_svnrevision():
 
     return None
 
-#Supply list of directories to check as arguments
-externals = sys.argv[1:]
-#If no arguments are given, try all known directories
-if not externals:
-    externals = ["genfit2"]
-
 #Get Belle2 environment variables
 try:
     LOCAL_DIR = os.environ["BELLE2_LOCAL_DIR"]
 except KeyError:
     print "Belle2 not setup correctly"
+    sys.exit(1)
+
+#Checking all folders takes far to long, lets provide a list of dirs to check
+#as environment variable
+externals = os.environ.get("BELLE2_SVN_EXTERNALS", "genfit2").split()
+
+#Check arguments: See if we are called as post-rewrite or post checkout and if
+#so determine if we need to do anything
+basename = os.path.basename(sys.argv[0])
+if basename == "post-checkout":
+    prev_head, new_head, branch_switch = sys.argv[1:]
+    if not branch_switch or prev_head == new_head:
+        #No branch real switch, nothing to do
+        sys.exit(0)
+
+    prev_revision = find_svnrevision(prev_head)
+    current_revision = find_svnrevision(new_head)
+    if prev_revision == current_revision:
+        #Nothing to do, both branches are based on the same svn revision
+        sys.exit(0)
+else:
+    if basename == "post-rewrite" and sys.argv[1] != "rebase":
+        #Nothing to do
+        sys.exit(0)
+
+    #Find svn revision current head is based on
+    current_revision = find_svnrevision()
+
+if current_revision is None:
+    print "Cannot determine SVN revision, cannot check for externals"
     sys.exit(1)
 
 #Let's change into the release dir
@@ -67,7 +91,7 @@ os.chdir(LOCAL_DIR)
 gitignore = []
 if os.path.exists(".gitignore"):
     with open(".gitignore") as f:
-        gitignore_contents = f.readlines()
+        gitignore = f.readlines()
 
 #Get the latest revision we checked out. This might not be the revision the
 #current branch is based on but finding that revision is more difficult.
