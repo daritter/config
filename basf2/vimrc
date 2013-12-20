@@ -1,4 +1,4 @@
-
+"Additional vimrc to be loaded for files inside the belle2 software dir
 python << EOF
 import os
 import vim
@@ -119,7 +119,8 @@ augroup belle2
     au!
     au BufNewFile $BELLE2_LOCAL_DIR/*.cc exec "py create_source()"
     au BufNewFile $BELLE2_LOCAL_DIR/*.h exec "py create_include()"
-    au BufNewFile,BufReadPre $BELLE2_LOCAL_DIR/*.{cc,h} setlocal expandtab shiftwidth=2 softtabstop=2 autoindent cin |
-                \ map <buffer> <F5> :py include_guard()<cr> |
-                \ map <buffer> <F6> :py check_author()<cr>
+    au BufNewFile,BufReadPre $BELLE2_LOCAL_DIR/*.{cc,h}
+        \ setlocal expandtab shiftwidth=2 softtabstop=2 autoindent cin |
+        \ map <buffer> <F5> :py include_guard()<cr> |
+        \ map <buffer> <F6> :py check_author()<cr>
 augroup END

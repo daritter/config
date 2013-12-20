@@ -4,6 +4,30 @@ if exists("homevimrc_loaded")
 endif
 let homevimrc_loaded = 1
 
+" Make vim work with the belle2 python version. The problem is that the
+" virtualenv does not work for programs linked against libpython as not all
+" paths are corrected. This nasty piece of code will replace the sys.prefix
+" with the VIRTUAL_ENV prefix and also replace all paths in sys.path which
+" seem to be in prefix to point to the VIRTUAL_ENV prefix.
+"
+" Not sure this will work in all cases but it got YouCompleteMe to cooperate
+" so I am hopeful
+python <<EOF
+import os
+import sys
+if os.environ.has_key("BELLE2_TOOLS"):
+    new_prefix = os.environ["VIRTUAL_ENV"]
+    sys.real_prefix = sys.prefix
+    sys.real_path = sys.path[:]
+    for i,path in enumerate(sys.path):
+        if path.startswith(sys.prefix):
+            new_path = os.path.join(new_prefix, path[len(sys.prefix)+1:])
+            if os.path.exists(new_path):
+                sys.path[i] = new_path
+
+    sys.prefix = new_prefix
+EOF
+
 " Setting up Vundle - the vim plugin bundler
 set nocompatible              " be iMproved
 filetype off                  " required for vundle
