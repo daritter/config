@@ -1,14 +1,45 @@
 #!/bin/sh
 
+#if there is nothing to commit we do nothing.
+#This might happen for git commit --amend to reword thecommit message
 if git diff --cached --quiet
 then
-	exit 0
+    exit 0
 fi
 
-if which checkstyle >/dev/null
+#if we can find fixstyle we check the files
+if which fixstyle >/dev/null
 then
-	exec git diff --cached --name-only | xargs checkstyle
+    #To check the files to be commited we need a temporary dir as there might
+    #be differences between the file in the index and the file on disk
+    tmpdir=`mktemp -d`
+    if [ $? -ne 0 ]; then
+        echo "Problem creating temp dir, aborting commit"
+        exit 2
+    fi
+
+    #Find out which files were modified
+    files_modified=`git diff --cached --name-only`
+    #Place a copy of the versions to be commited in the temp dir
+    git checkout-index --prefix=$tmpdir/ -- $files_modified
+    #Check all the files in the temp dir and write which ones failed the check
+    fail=0
+    for file in $files_modified; do
+        fixstyle -c "$tmpdir/$file" > /dev/null
+        if [ $? -ne 0 ]; then
+            echo "checkstyle failed for $file"
+            fail=1
+        fi
+    done
+    #At least one fail, abort commit
+    if [ $fail -ne 0 ]; then
+        echo "commit aborted, run fixstyle first"
+    fi
+    #Clean up the temp dir
+    rm -r $tmpdir
+    exit $fail
 else
-	echo "Checkstyle not found, please setup the Belle2 Tools"
-	exit 255
+    #fixstyle not found, bail out
+    echo "fixstyle not found, please setup the Belle2 Tools"
+    exit 255
 fi
