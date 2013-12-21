@@ -137,10 +137,10 @@ for e in externals:
 
         #Check if it is already excluded
         exclude = "/%s/" % os.path.join(e, dirname).strip("/")
-        if not any(e.startswith(exclude) for e in gitignore):
+        if not any(e.strip() == exclude for e in gitignore):
             #If not, add it to the gitignore
-            gitignore.append(
-                "%s # ignore directory containing svn:externals\n" % exclude)
+            gitignore += ["# ignore directory containing svn:externals\n",
+                          exclude + "\n"]
 
 #Write gitignore file
 with open(".gitignore", "w") as f:
