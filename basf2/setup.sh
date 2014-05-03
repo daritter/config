@@ -41,9 +41,14 @@ export EDITOR=vim
 #Makes gdb work
 export PYTHONHOME=$BELLE2_TOOLS/virtualenv
 #Make sure we find the third party packages like numpy, ipython on ubuntu
+prepend_path PYTHONPATH ${BELLE2_TOOLS}/python/lib/python2.7
 append_path PYTHONPATH "/usr/local/lib/python2.7/dist-packages"
 append_path PYTHONPATH "/usr/lib/python2.7/dist-packages"
 append_path PYTHONPATH "/usr/lib/pymodules/python2.7"
 #Remove duplicates from path because reasons
 clean_path PATH
 clean_path LD_LIBRARY_PATH
+
+#Make prompt more colorful
+export PS1='\t [\[\033[0;32m\]\h\[\033[0m\]:\w]\$ '
+export SETUP='(B2)'

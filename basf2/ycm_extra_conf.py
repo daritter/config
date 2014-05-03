@@ -1,8 +1,9 @@
 import os
+from distutils import sysconfig
 flags = [
     '-Wall',
     '-Wextra',
-#    '-Werror',
+    #'-Werror',
     '-Wno-long-long',
     '-Wno-variadic-macros',
     '-fexceptions',
@@ -16,26 +17,31 @@ if not b2dir:
     print "Belle2 not set up correctly."
 else:
     b2ext = os.environ["BELLE2_EXTERNALS_DIR"]
-    subdir = os.environ.get('BELLE2_EXTERNALS_SUBDIR', os.environ['BELLE2_SUBDIR'])
+    subdir = os.environ.get('BELLE2_EXTERNALS_SUBDIR',
+                            os.environ['BELLE2_SUBDIR'])
     includes.append("%s/include" % b2ext)
-    for ext in ["", "CLHEP", "Geant4", "vgm", "genfit", "HepMC", "pythia", "Photos", "Tauola", "evtgen", "FLC", "Eigen"]:
+    for ext in ["", "CLHEP", "Geant4", "vgm", "genfit", "HepMC", "pythia",
+                "Photos", "Tauola", "evtgen", "FLC", "Eigen"]:
         flags.append("%s/include/%s" % (b2ext, ext))
     includes.append(os.path.join(b2ext, "root", subdir, "include"))
+    includes.append(sysconfig.get_python_inc())
     includes.append("/usr/include/libxml2")
 
 
 def FlagsForFile(filename, **kwargs):
+    global includes
     # Add all include directories in parent directories to the include path
     dirname = os.path.dirname(filename)
     local_includes = []
     while True:
         incdir = os.path.join(dirname, "include")
         if os.path.isdir(incdir):
-            local_includes.insert(0,incdir)
+            local_includes.insert(0, incdir)
         dirname = os.path.dirname(dirname)
         if not dirname.strip(os.path.sep):
             break
 
-    includes = local_includes + includes
+    all_includes = local_includes + includes
 
-    return {"flags": flags + ["-I%s" % e for e in includes], "do_cache": True}
+    return {"flags": flags + ["-I%s" % e for e in all_includes],
+            "do_cache": True}

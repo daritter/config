@@ -42,7 +42,7 @@ function prompt_command () {
     if [ $RETURN -ne 0 ]; then
         echo -e "\nreturncode: \033[0;31m$RETURN\033[00m";
     fi
-    echo -ne "\033]0;${HOSTNAME}: ${PWD/$HOME/~}\007"
+    echo -ne "\033]0;${SETUP}${HOSTNAME}: ${PWD/$HOME/~}\007"
     return $RETURN
 }
 case "$TERM" in
@@ -70,6 +70,11 @@ fi
 # sources /etc/bash.bashrc).
 if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
     . /etc/bash_completion
+fi
+
+export TEXLIVE=/remote/pcbelle03/ritter/local/texlive
+if [ -d $TEXLIVE ]; then
+    export PATH=$TEXLIVE/bin/x86_64-linux/:$PATH
 fi
 
 export MPI=ritter@pcbelle03.mpp.mpg.de

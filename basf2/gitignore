@@ -25,3 +25,5 @@ debug.txt
 
 # ignore directory containing svn:externals
 /genfit2/code/
+# ignore directory containing svn:externals
+/genfit2/code2/

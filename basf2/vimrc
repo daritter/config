@@ -2,6 +2,7 @@
 python << EOF
 import os
 import vim
+from distutils import sysconfig
 
 head_template = """
 /**************************************************************************
@@ -100,7 +101,7 @@ def set_path():
     """Set the include path for Syntastic to be able to check the code."""
     b2dir = os.environ.get("BELLE2_LOCAL_DIR",None)
     if not b2dir:
-        print "Belle2 not set up correctly."
+        #print "Belle2 not set up correctly."
         return
 
     b2ext = os.environ["BELLE2_EXTERNALS_DIR"]
@@ -110,6 +111,8 @@ def set_path():
     for ext in ["", "CLHEP", "Geant4", "vgm", "genfit", "HepMC", "pythia", "Photos", "Tauola", "evtgen", "FLC", "Eigen"]:
         flags.append("-I%s/include/%s" % (b2ext, ext))
     flags.append("-I" + os.path.join(b2ext,"root", subdir ,"include"))
+    flags.append("-I" + sysconfig.get_python_inc())
+    flags.append("-I/usr/include/libxml2")
     vim.command("let b:syntastic_cpp_cflags = '%s'" % " ".join(flags))
 
 set_path()

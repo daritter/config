@@ -15,7 +15,7 @@ let homevimrc_loaded = 1
 python <<EOF
 import os
 import sys
-if os.environ.has_key("BELLE2_TOOLS"):
+if os.environ.has_key("BELLE2_TOOLS") and os.environ.has_key("VIRTUAL_ENV"):
     new_prefix = os.environ["VIRTUAL_ENV"]
     sys.real_prefix = sys.prefix
     sys.real_path = sys.path[:]
