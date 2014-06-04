@@ -5,6 +5,9 @@
 gbl.output
 gbl.debug
 debug.txt
+millefile.dat
+millepede.log
+millepede.log~
 
 # usual Belle2 stuff
 /.externals

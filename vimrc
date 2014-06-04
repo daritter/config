@@ -46,12 +46,12 @@ Bundle 'gmarik/vundle'
 "Add your bundles here
 Bundle 'scrooloose/syntastic'
 Bundle 'scrooloose/nerdcommenter'
+Bundle 'Valloric/YouCompleteMe'
 Bundle 'altercation/vim-colors-solarized'
 Bundle 'bling/vim-airline'
 Bundle 'tpope/vim-fugitive'
 Bundle 'mhinz/vim-signify'
 Bundle 'git://git.code.sf.net/p/vim-latex/vim-latex'
-Bundle 'Valloric/YouCompleteMe'
 Bundle 'klen/python-mode'
 Bundle 'python.vim'
 Bundle 'python_match.vim'
@@ -124,7 +124,7 @@ set t_Co=16
 set laststatus=2 guifont=Ubuntu\ Mono\ derivative\ Powerline\ 13
 "if has("gui_running")
 let g:airline_theme='solarized'
-set background=dark
+set background=light
 let g:solarized_contrast='normal'
 let g:solarized_termcolors=255
 colorscheme solarized
