@@ -75,9 +75,16 @@ fi
 export TEXLIVE=/remote/pcbelle03/ritter/local/texlive
 if [ -d $TEXLIVE ]; then
     export PATH=$TEXLIVE/bin/x86_64-linux/:$PATH
+else
+    export TEXLIVE=/usr/local/texlive/2014
+    if [ -d $TEXLIVE ]; then
+        export PATH=$TEXLIVE/bin/x86_64-linux/:$PATH
+    else
+        unset TEXLIVE
+    fi
 fi
 
-export MPI=ritter@pcbelle03.mpp.mpg.de
+export MPI=ritter@pcbelle15.mpp.mpg.de
 export KEK=ritter@login.cc.kek.jp
 export AFS=/afs/ipp/home/m/mritter
 export BH=/afs/ipp/mpp/belle

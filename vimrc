@@ -89,6 +89,11 @@ set autoindent expandtab shiftwidth=4 softtabstop=4
 " Suffixes that get lower priority when doing tab completion for filenames.
 " These are files we are not likely to want to edit or read.
 set suffixes=.bak,~,.swp,.o,.info,.aux,.log,.dvi,.bbl,.blg,.brf,.cb,.ind,.idx,.ilg,.inx,.out,.toc
+"Show tabs and trailing whitespace using light markers
+set listchars=tab:└─,trail:∙
+set list
+"Set to have a slightly different background in columns 80 and starting at 120
+let &colorcolumn="80,120,121"
 
 if isdirectory("/mnt/scratch/tmp")
     set directory=/mnt/scratch/tmp/ritter//
@@ -119,6 +124,7 @@ let g:ycm_global_ycm_extra_conf = '~/.vim/ycm_conf.py'
 let g:ycm_extra_conf_globlist = [resolve(expand('~/basf2/')) . '*']
 "let g:ycm_extra_conf_vim_data = ['b:syntastic_cpp_cflags']
 
+
 "vim airline
 set t_Co=16
 set laststatus=2 guifont=Ubuntu\ Mono\ derivative\ Powerline\ 13
@@ -126,7 +132,7 @@ set laststatus=2 guifont=Ubuntu\ Mono\ derivative\ Powerline\ 13
 let g:airline_theme='solarized'
 set background=light
 let g:solarized_contrast='normal'
-let g:solarized_termcolors=255
+let g:solarized_visibility='low'
 colorscheme solarized
 "else
 "    let g:airline_theme='bubblegum'
@@ -171,12 +177,6 @@ let g:tagbar_type_tex = {
 autocmd BufReadPre SCons* set filetype=python
 autocmd BufNewFile SCons* set filetype=python
 
-"Highlight extra whitespace
-highlight ExtraWhitespace ctermbg=red guibg=red
-au ColorScheme * highlight ExtraWhitespace guibg=red
-au BufEnter * match ExtraWhitespace /\s\+$/
-au InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
-au InsertLeave * match ExtraWhiteSpace /\s\+$/
 "remove trailing whitespace from most files
 autocmd Filetype python,cpp,tex,vim autocmd BufWritePre  * exec "norm m`" | %s/\s\+$//e | exec "norm ``"
 autocmd Filetype python,cpp,tex,vim autocmd FileWritePre * exec "norm m`" | '[,']s/\s\+$//e | exec "norm ``"

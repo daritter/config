@@ -22,7 +22,7 @@ else:
     includes.append("%s/include" % b2ext)
     for ext in ["", "CLHEP", "Geant4", "vgm", "genfit", "HepMC", "pythia",
                 "Photos", "Tauola", "evtgen", "FLC", "Eigen"]:
-        flags.append("%s/include/%s" % (b2ext, ext))
+        includes.append("%s/include/%s" % (b2ext, ext))
     includes.append(os.path.join(b2ext, "root", subdir, "include"))
     includes.append(sysconfig.get_python_inc())
     includes.append("/usr/include/libxml2")
