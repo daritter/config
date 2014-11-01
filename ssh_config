@@ -1,0 +1,26 @@
+#Settings for KEKCC
+Host *.cc.kek.jp
+    #Use fast encryption algorithms
+    MACs umac-64@openssh.com
+    Ciphers arcfour
+    CheckHostIP no
+    #Forward SSH Key Agent, this allows to log back into MPI machines using
+    #your local private key
+    ForwardAgent yes
+    #No X11 to Japan
+    ForwardX11 no
+    ForwardX11Trusted no
+    #But Compression would be nice
+    Compression yes
+
+#Settings for internal machines
+Host pcbelle* pcilc*
+    MACs umac-64@openssh.com
+    Ciphers arcfour
+    CheckHostIP no
+    ForwardAgent yes
+    #Yes, we want X11 Forwarding
+    ForwardX11 yes
+    ForwardX11Trusted yes
+    #But compression is not really necessary inhouse
+    Compression no
