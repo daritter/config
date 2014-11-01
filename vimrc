@@ -95,10 +95,10 @@ set list
 "Set to have a slightly different background in columns 80 and starting at 120
 let &colorcolumn="80,120,121"
 
-if isdirectory("/mnt/scratch/tmp")
-    set directory=/mnt/scratch/tmp/ritter//
-    if !isdirectory("/mnt/scratch/tmp/ritter")
-        call mkdir("/mnt/scratch/tmp/ritter", "p")
+if isdirectory("/mnt/scratch")
+    set directory=/mnt/scratch/ritter/tmp//
+    if !isdirectory("/mnt/scratch/ritter/tmp")
+        call mkdir("/mnt/scratch/ritter/tmp", "p")
     endif
 else
     set dir=~/.vim/tmp//	" Put swapfiles in vim dir
@@ -121,7 +121,7 @@ let g:syntastic_style_warning_symbol = "\ue0b1\ue0b1"
 
 "YouCompleteME
 let g:ycm_global_ycm_extra_conf = '~/.vim/ycm_conf.py'
-let g:ycm_extra_conf_globlist = [resolve(expand('~/basf2/')) . '*']
+let g:ycm_extra_conf_globlist = [resolve(expand('~/basf2/')) . '*', resolve(expand('~/belle/')) . '*']
 "let g:ycm_extra_conf_vim_data = ['b:syntastic_cpp_cflags']
 
 

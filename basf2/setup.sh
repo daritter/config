@@ -49,7 +49,7 @@ append_path PYTHONPATH "/usr/lib/pymodules/python2.7"
 clean_path PATH
 clean_path LD_LIBRARY_PATH
 
-alias scons="scons -DQ --symlink"
+alias scons="scons -DQ"
 
 #Make prompt more colorful
 export PS1='\t [\[\033[0;32m\]\h\[\033[0m\]:\w]\$ '

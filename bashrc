@@ -1,19 +1,6 @@
 # If not running interactively, don't do anything
 [ -z "$PS1" ] && return
 
-export LC_CTYPE="en_US.UTF-8"
-export LC_NUMERIC="en_US.UTF-8"
-export LC_TIME="en_DK.UTF-8"
-export LC_COLLATE="en_US.UTF-8"
-export LC_MONETARY="en_IE.UTF-8"
-export LC_MESSAGES="en_US.UTF-8"
-export LC_PAPER="en_GB.UTF-8"
-export LC_NAME="en_US.UTF-8"
-export LC_ADDRESS="en_US.UTF-8"
-export LC_TELEPHONE="en_US.UTF-8"
-export LC_MEASUREMENT="en_DK.UTF-8"
-export LC_IDENTIFICATION="en_US.UTF-8"
-
 export SOFTWARE_WORK=~/work
 export SOFTWARE_LOCAL=~/local
 export PATH=$SOFTWARE_WORK/bin:$SOFTWARE_LOCAL/bin:$PATH
@@ -59,7 +46,6 @@ PS1='\t [\h:\w]\$ '
 if [ -x /usr/bin/dircolors ]; then
     test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
     alias ls='ls --color=auto'
-
     alias grep='grep --color=auto'
     alias fgrep='fgrep --color=auto'
     alias egrep='egrep --color=auto'
@@ -72,17 +58,14 @@ if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
     . /etc/bash_completion
 fi
 
-export TEXLIVE=/remote/pcbelle03/ritter/local/texlive
-if [ -d $TEXLIVE ]; then
-    export PATH=$TEXLIVE/bin/x86_64-linux/:$PATH
-else
-    export TEXLIVE=/usr/local/texlive/2014
+# enable texlive distribution and check more than one directory
+for TEXLIVE in ~/local/texlive /usr/local/texlive/2014; do
     if [ -d $TEXLIVE ]; then
-        export PATH=$TEXLIVE/bin/x86_64-linux/:$PATH
-    else
-        unset TEXLIVE
+        export PATH=$TEXLIVE/bin/x86_64-linux:$PATH
+        export TEXLIVE
+        break;
     fi
-fi
+done
 
 export MPI=ritter@pcbelle15.mpp.mpg.de
 export KEK=ritter@login.cc.kek.jp
@@ -91,9 +74,24 @@ export BH=/afs/ipp/mpp/belle
 
 alias afslogin='klog.afs -principal mritter -cell ipp-garching.mpg.de'
 alias rzg='ssh -Y mritter@mpiui1.t2.rzg.mpg.de'
-alias vnc='xtightvncviewer -encodings "copyrect tight hextile  zlib  corre  rre raw"'
+alias vnc='xtightvncviewer -encodings "copyrect tight hextile zlib corre rre raw"'
 
 function alert(){
-    ssh -Y pcbelle03 "DISPLAY=:0 notify-send -u critical -t 1000 -i $([ $? = 0 ] && echo terminal || echo error)\
-                      \"$(history|tail -n1| sed -e 's/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//')\""
+python <<EOT
+import re
+from gi.repository import Notify
+
+ret = $?
+#get last command name, replacing ' with \'
+cmd = '$(history 1 | sed "s/'/\\\\'/g")'
+#replace the entry number at the beginning and the alert command at the end
+cmd = re.sub("^\\s*\\d+\\s*|(;|&&|\\|\\|)\\s*alert\\s*$","", cmd)
+#set title and icon according to return value
+title = (ret==0) and "finished" or ("failed (%d)" % ret)
+icon = (ret==0) and "dialog-information" or "dialog-error"
+#send notification
+Notify.init("alert")
+n = Notify.Notification.new("Command "+ title, cmd, icon)
+n.show()
+EOT
 }
