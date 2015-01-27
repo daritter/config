@@ -108,12 +108,14 @@ filetype plugin indent on
 syntax on
 
 "syntastic
+let g:syntastic_aggregate_errors = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_enable_signs = 1
 let g:syntastic_enable_balloons = 1
 let g:syntastic_enable_highlighting = 1
 let g:syntastic_id_checkers = 1
 let g:syntastic_python_checkers = ['python', 'pyflakes', 'pep8']
+let g:syntastic_python_pep8_args = "--max-line-length=120"
 let g:syntastic_error_symbol = "\ue0b0\ue0b1"
 let g:syntastic_warning_symbol = "\ue0b0\ue0b1"
 let g:syntastic_style_error_symbol = "\ue0b1\ue0b1"

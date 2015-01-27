@@ -5,7 +5,7 @@ export SOFTWARE_WORK=~/work
 export SOFTWARE_LOCAL=~/local
 export PATH=$SOFTWARE_WORK/bin:$SOFTWARE_LOCAL/bin:$PATH
 export LD_LIBRARY_PATH=$SOFTWARE_WORK/lib:$SOFTWARE_LOCAL/lib:$LD_LIBRARY_PATH
-export PYTHONPATH=$SOFTWARE_WORK/python
+export PYTHONPATH=$SOFTWARE_WORK/python:$SOFTWARE_LOCAL/lib/python2.7/site-packages
 export TEXMFHOME=$SOFTWARE_WORK/texmf
 export EDITOR=vim
 
