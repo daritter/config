@@ -1,7 +1,24 @@
-#Settings for KEKCC
-Host *.cc.kek.jp
+# Generic mpp connection, works as 'ssh mpp', 'scp mpp:..' and so forth
+Host mpp
+    User ritter
+    # hostname to use when "ssh mpp"
+    HostName pcbelle15.mpp.mpg.de
+    # use control hub. This will send all additional connections to mpp through 
+    # the same socket so no additional connection needs to be established
+    ControlMaster auto
+    ControlPath /tmp/%u-ssh-%r@%h:%p
+    # The connection will also be kept alive for 10 minutes after the last session
+    # disconnected for reuse
+    ControlPersist 600
+
+Host kekcc
+    User ritter
+    Hostname login.cc.kek.jp
+    # use control hub to use only one ssh channel for all kekcc connections
+    ControlMaster auto
+    ControlPath /tmp/%u-ssh-%r@%h:%p
+    ControlPersist 600
     #Use fast encryption algorithms
-    MACs umac-64@openssh.com
     Ciphers arcfour
     CheckHostIP no
     #Forward SSH Key Agent, this allows to log back into MPI machines using
@@ -10,17 +27,45 @@ Host *.cc.kek.jp
     #No X11 to Japan
     ForwardX11 no
     ForwardX11Trusted no
-    #But Compression would be nice
+    # But Compression would be nice
     Compression yes
+    # connect using mpp as proxy
+    ProxyCommand ssh mpp -W %h:%p
 
 #Settings for internal machines
-Host pcbelle* pcilc*
+Host pcbelle* pcilc* pxdtest* iuno bellona
     MACs umac-64@openssh.com
     Ciphers arcfour
-    CheckHostIP no
     ForwardAgent yes
     #Yes, we want X11 Forwarding
     ForwardX11 yes
     ForwardX11Trusted yes
     #But compression is not really necessary inhouse
     Compression no
+
+# settings for dhe machnines
+Host betria
+    ControlMaster auto
+    ControlPath /tmp/%u-ssh-%r@%h:%p
+    ControlPersist 600
+    User hybrid5
+    HostName betria.hll.mpg.de
+    # faster cipher
+    MACs umac-64@openssh.com
+    Ciphers arcfour
+    # and use compression
+    Compression yes
+    # connect using mpp as proxy
+    ProxyCommand ssh mpp -W %h:%p
+
+Host bellona
+    User depfet
+
+Host pxdtest1
+    User hybrid5
+    HostName pxdtest1.mpp.mpg.de
+
+Host pxdtest2 pxdtest3 iuno bellona
+    User hybrid5
+    # connect using betria as proxy
+    ProxyCommand ssh betria -W %h:%p

@@ -3,7 +3,7 @@
 
 export SOFTWARE_WORK=~/work
 export SOFTWARE_LOCAL=~/local
-export PATH=$SOFTWARE_WORK/bin:$SOFTWARE_LOCAL/bin:$PATH
+export PATH=~/.local/bin:$SOFTWARE_WORK/bin:$SOFTWARE_LOCAL/bin:$PATH
 export LD_LIBRARY_PATH=$SOFTWARE_WORK/lib:$SOFTWARE_LOCAL/lib:$LD_LIBRARY_PATH
 export PYTHONPATH=$SOFTWARE_WORK/python:$SOFTWARE_LOCAL/lib/python2.7/site-packages
 export TEXMFHOME=$SOFTWARE_WORK/texmf
@@ -67,8 +67,6 @@ for TEXLIVE in ~/local/texlive /usr/local/texlive/2014; do
     fi
 done
 
-export MPI=ritter@pcbelle15.mpp.mpg.de
-export KEK=ritter@login.cc.kek.jp
 export AFS=/afs/ipp/home/m/mritter
 export BH=/afs/ipp/mpp/belle
 
