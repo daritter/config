@@ -29,7 +29,7 @@ function prompt_command () {
     if [ $RETURN -ne 0 ]; then
         echo -e "\nreturncode: \033[0;31m$RETURN\033[00m";
     fi
-    echo -ne "\033]0;${SETUP}${HOSTNAME}: ${PWD/$HOME/~}\007"
+    echo -ne "\033]0;${SETUP}${HOSTNAME}: ${PWD/#$HOME/\~}\007"
     return $RETURN
 }
 case "$TERM" in
