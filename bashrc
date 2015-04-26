@@ -73,6 +73,7 @@ export BH=/afs/ipp/mpp/belle
 alias afslogin='klog.afs -principal mritter -cell ipp-garching.mpg.de'
 alias rzg='ssh -Y mritter@mpiui1.t2.rzg.mpg.de'
 alias vnc='xtightvncviewer -encodings "copyrect tight hextile zlib corre rre raw"'
+alias vim='gvim -v'
 
 function alert(){
 python <<EOT

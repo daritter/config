@@ -9,8 +9,7 @@ from dbus.mainloop.glib import DBusGMainLoop
 def run(*args):
     """Simple function to run a program and return its output as list of
     strings."""
-    proc = subprocess.Popen(args, stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE)
+    proc = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     stdout, stderr = proc.communicate()
     retcode = proc.wait()
     if retcode != 0:
@@ -26,8 +25,7 @@ def call(*args):
 class VimRemote(object):
     """Class to simplify opening files in vim."""
 
-    def __init__(self, default=None, highlight=False, tab=True,
-            executable="gvim"):
+    def __init__(self, default=None, highlight=False, tab=True, executable="gvim"):
         self.default = default
         self.highlight = highlight
         self.tab = tab
@@ -42,7 +40,7 @@ class VimRemote(object):
         files = []
         for instance in self.get_servers():
             buffers = run(self.executable, "--servername", instance,
-                    "--remote-expr", "ListFiles()")
+                          "--remote-expr", "ListFiles()")
             for filename in buffers:
                 files.append(filename)
 
@@ -53,7 +51,7 @@ class VimRemote(object):
         If file is not found, default will be returned"""
         for instance in self.get_servers():
             buffers = run(self.executable, "--servername", instance,
-                    "--remote-expr", "ListFiles()")
+                          "--remote-expr", "ListFiles()")
             if filename in buffers:
                 return instance
 
@@ -69,18 +67,16 @@ class VimRemote(object):
         server = self.find(filename)
         if server is None:
             if self.highlight:
-                call(self.executable, "+%d" % line,
-                        "+call Highlight(%d)" % line, filename)
+                call(self.executable, "+%d" % line, "+call Highlight(%d)" % line,
+                     filename)
             else:
                 call(self.executable, "+%d" % line, filename)
         else:
             command = self.tab and "--remote-tab-silent" or "--remote-silent"
             call(self.executable, "--servername", server, command,
-                    "+%d<Enter>" % line, filename)
-            highlight = self.highlight and ("Highlight(%d)" % line) \
-                    or "foreground()"
-            call(self.executable, "--servername", server,
-                    "--remote-expr", highlight)
+                 "+%d<Enter>" % line, filename)
+            highlight = self.highlight and ("Highlight(%d)" % line) or "foreground()"
+            call(self.executable, "--servername", server, "--remote-expr", highlight)
 
 
 class EvinceListener(object):
@@ -89,8 +85,8 @@ class EvinceListener(object):
     def __init__(self):
         self._handler = None
         self._bus = dbus.SessionBus()
-        self._bus.add_signal_receiver(self._on_sync_source,
-                signal_name="SyncSource", dbus_interface=self.EV_WINDOW_IFACE)
+        self._bus.add_signal_receiver(self._on_sync_source, signal_name="SyncSource",
+                                      dbus_interface=self.EV_WINDOW_IFACE)
 
     def _on_sync_source(self, input_file, source_link, time):
         input_file = input_file.replace("file://", "")

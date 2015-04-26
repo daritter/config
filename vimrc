@@ -69,6 +69,7 @@ endif
 " Configuration file for vim
 set encoding=utf-8
 au GUIEnter * set columns=117 lines=40
+set modeline
 set mousemodel=popup_setpos
 set mouse=a
 set viminfo=%,'20,<50,h
@@ -116,10 +117,10 @@ let g:syntastic_enable_highlighting = 1
 let g:syntastic_id_checkers = 1
 let g:syntastic_python_checkers = ['python', 'pyflakes', 'pep8']
 let g:syntastic_python_pep8_args = "--max-line-length=120"
-let g:syntastic_error_symbol = "\ue0b0\ue0b1"
-let g:syntastic_warning_symbol = "\ue0b0\ue0b1"
-let g:syntastic_style_error_symbol = "\ue0b1\ue0b1"
-let g:syntastic_style_warning_symbol = "\ue0b1\ue0b1"
+let g:syntastic_error_symbol = "▸"
+let g:syntastic_warning_symbol = "▸"
+let g:syntastic_style_error_symbol = "▹"
+let g:syntastic_style_warning_symbol = "▹"
 
 "YouCompleteME
 let g:ycm_global_ycm_extra_conf = '~/.vim/ycm_conf.py'
@@ -153,6 +154,9 @@ let g:signify_sign_add = '+'
 let g:signify_sign_change = '~'
 let g:signify_sign_delete = '_'
 let g:signify_sign_delete_first_line = '‾'
+
+"nerdcommenter
+let g:NERDSpaceDelims = 1
 
 "vim-tagbar
 map <f2> :TagbarToggle<CR>
