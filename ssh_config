@@ -3,15 +3,44 @@ Host mpp
     User ritter
     # hostname to use when "ssh mpp"
     HostName pcbelle15.mpp.mpg.de
-    # use control hub. This will send all additional connections to mpp through 
+    # use control hub. This will send all additional connections to mpp through
     # the same socket so no additional connection needs to be established
     ControlMaster auto
     ControlPath /tmp/%u-ssh-%r@%h:%p
-    # The connection will also be kept alive for 10 minutes after the last session
-    # disconnected for reuse
+    # The connection will also be kept alive for 10 minutes after the last
+    # session disconnected for reuse
     ControlPersist 600
 
-Host kekcc
+# use with autossh -M 0 -f -- ssh -fN reverse-lmu-mpp to create reverse ssh
+# tunnel to connect back to lmu
+Host reverse-lmu-mpp
+    Hostname pcbelle15.mpp.mpg.de
+    User ritter
+    ConnectionAttempts 3
+    TCPKeepAlive no
+    #PasswordAuthentication no
+    #IdentitiesOnly yes
+    #IdentityFile ~/.ssh/
+    ExitOnForwardFailure yes
+    RemoteForward 22001 localhost:22
+    ServerAliveCountMax 3
+    ServerAliveInterval 60
+
+Host lmu
+    User ritter
+    Hostname localhost
+    Port 22001
+    ControlMaster auto
+    ControlPath /tmp/%u-ssh-%r@%h:%p
+    ControlPersist 600
+    CheckHostIP no
+    ForwardX11 yes
+    ForwardX11Trusted yes
+    Compression yes
+    # connect using mpp as proxy
+    ProxyCommand ssh mpp -W %h:%p
+
+Host kek
     User ritter
     Hostname login.cc.kek.jp
     # use control hub to use only one ssh channel for all kekcc connections
