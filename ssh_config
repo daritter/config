@@ -40,6 +40,13 @@ Host lmu
     # connect using mpp as proxy
     ProxyCommand ssh mpp -W %h:%p
 
+Host proton
+    User ritter
+    Hostname 10.155.59.111
+    CheckHostIP no
+    ForwardX11 yes
+    ForwardX11Trusted yes
+
 Host kek
     User ritter
     Hostname login.cc.kek.jp
