@@ -25,7 +25,7 @@ then
     #Check all the files in the temp dir and write which ones failed the check
     fail=0
     for file in $files_modified; do
-        fixstyle -c "$tmpdir/$file" > /dev/null
+        fixstyle -p "$tmpdir/$file" > /dev/null
         if [ $? -ne 0 ]; then
             echo "checkstyle failed for $file"
             fail=1
