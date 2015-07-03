@@ -55,4 +55,4 @@ alias scons="scons -DQ"
 
 #Make prompt more colorful
 export PS1='\t [\[\033[0;32m\]\h\[\033[0m\]:\w]\$ '
-export SETUP='(B2)'
+export PS1="\[\e]0;[B2] \h: \w\a\]$PS1"
