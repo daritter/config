@@ -13,7 +13,7 @@ let g:Tex_SmartKeyDot = 0
 let g:Tex_GotoError = 0
 let g:Tex_Folding = 0
 
-let g:Tex_Env_frame = "\\begin{frame}{<+title+>}\<CR><++>\<CR>\\end{frame}"
+let g:Tex_Env_frame = "\\begin{frame}{<+title+>}{}\<CR><++>\<CR>\\end{frame}"
 let g:Tex_Env_columns = "\\begin{columns}\<CR>\\column{<+width+>}\<CR><++>\<CR>\\end{columns}"
 let g:Tex_Env_block = "\\begin{block}{<+title+>}\<CR><++>\<CR>\\end{block}"
 let g:Tex_Env_exampleblock = "\\begin{exampleblock}{<+title+>}\<CR><++>\<CR>\\end{exampleblock}"

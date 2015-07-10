@@ -10,6 +10,8 @@ Host mpp
     # The connection will also be kept alive for 10 minutes after the last
     # session disconnected for reuse
     ControlPersist 600
+    TCPKeepAlive yes
+    ServerAliveInterval 20
 
 # use with autossh -M 0 -f -- ssh -fN reverse-lmu-mpp to create reverse ssh
 # tunnel to connect back to lmu
@@ -18,9 +20,9 @@ Host reverse-lmu-mpp
     User ritter
     ConnectionAttempts 3
     TCPKeepAlive no
-    #PasswordAuthentication no
-    #IdentitiesOnly yes
-    #IdentityFile ~/.ssh/
+    PasswordAuthentication no
+    IdentitiesOnly yes
+    IdentityFile ~/.ssh/id_rsa
     ExitOnForwardFailure yes
     RemoteForward 22001 localhost:22
     ServerAliveCountMax 3
