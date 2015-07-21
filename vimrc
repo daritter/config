@@ -59,6 +59,7 @@ Bundle 'pythoncomplete'
 Bundle 'majutsushi/tagbar'
 Bundle 'nathanaelkane/vim-indent-guides'
 Bundle 'perdirvimrc--Autoload-vimrc-files-per-di'
+Bundle 'bogado/file-line'
 if iCanHazVundle == 0
     echo "Installing Bundles, please ignore key map error messages"
     echo ""

@@ -1,0 +1,7 @@
+[user]
+	email = martin.ritter@lmu.de
+	name = Martin Ritter
+[push]
+	default = simple
+[alias]
+	fixstyle = ! git diff --cached --name-status | cut -f2- | xargs fixstyle
