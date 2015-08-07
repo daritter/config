@@ -23,6 +23,8 @@ if [ "$1" == "check" ]; then
     unset BELLE2_NO_TOOLS_CHECK
 fi
 
+export BELLE2_BACKGROUND_DIR=~/belle2/bkg/
+
 # Find out where we want to be
 BELLE2_LOCAL_DIR=`dirname $BASH_SOURCE`
 # and go there
@@ -55,4 +57,13 @@ alias scons="scons -DQ"
 
 #Make prompt more colorful
 export PS1='\t [\[\033[0;32m\]\h\[\033[0m\]:\w]\$ '
-export PS1="\[\e]0;[B2] \h: \w\a\]$PS1"
+#Add [B2:option] to xterm title
+function prompt_command () {
+    RETURN=$?
+    if [ $RETURN -ne 0 ]; then
+        echo -e "\nreturncode: \033[0;31m$RETURN\033[00m";
+    fi
+    echo -ne "\033]0;[B2:${BELLE2_OPTION}] ${HOSTNAME}: ${PWD/#$HOME/\~}\007"
+    return $RETURN
+}
+PROMPT_COMMAND=prompt_command

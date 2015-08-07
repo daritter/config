@@ -42,6 +42,19 @@ Host lmu
     # connect using mpp as proxy
     ProxyCommand ssh mpp -W %h:%p
 
+Host c2pap
+    User ru75gog2
+    Hostname c2paplogin.lrz.de
+    ControlMaster auto
+    ControlPath /tmp/%u-ssh-%r@%h:%p
+    ControlPersist 600
+    CheckHostIP no
+    ForwardX11 yes
+    ForwardX11Trusted yes
+    Ciphers arcfour
+    # connect using mpp as proxy
+    #ProxyCommand ssh lmu -W %h:%p
+
 Host proton
     User ritter
     Hostname 10.155.59.111

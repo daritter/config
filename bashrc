@@ -96,6 +96,7 @@ alias afslogin='klog.afs -principal mritter -cell ipp-garching.mpg.de'
 alias rzg='ssh -Y mritter@mpiui1.t2.rzg.mpg.de'
 alias vnc='xtightvncviewer -encodings "copyrect tight hextile zlib corre rre raw"'
 alias vim='gvim -v'
+alias belle2=". ~/belle2/software/setup.sh"
 
 function my_alert(){
 python <<EOT
