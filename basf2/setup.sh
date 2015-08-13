@@ -54,6 +54,7 @@ if [ "$1" != "gdb" ]; then
 fi
 
 alias scons="scons -DQ"
+alias bcd="cd $BELLE2_LOCAL_DIR"
 
 #Make prompt more colorful
 export PS1='\t [\[\033[0;32m\]\h\[\033[0m\]:\w]\$ '
