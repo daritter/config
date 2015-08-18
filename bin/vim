@@ -1,0 +1,6 @@
+#!/bin/sh
+# make sure vim can find site.py on startup because it has the wrong python path
+if [ ! -z "$VIRTUAL_ENV" ]; then
+   export PYTHONPATH=$PYTHONPATH:$VIRTUAL_ENV/lib/python2.7
+fi
+/usr/bin/`basename $0` "$@"
