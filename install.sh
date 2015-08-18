@@ -10,7 +10,7 @@ mkdir -p vim/tmp
 cat > ~/.config/autostart/evincesync.desktop <<EOT
 [Desktop Entry]
 Type=Application
-Exec=$SCRIPTPATH/evincesync
+Exec=$SCRIPTPATH/bin/evincesync
 Hidden=false
 NoDisplay=false
 X-GNOME-Autostart-enabled=true
