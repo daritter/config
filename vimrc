@@ -149,8 +149,8 @@ let g:airline_powerline_fonts=1
 
 "vim-signify
 let g:signify_sign_overwrite = 0
-let g:signify_vcs_list = [ 'git', 'hg' ]
-let g:signify_diffoptions = { 'git': '-w', 'hg': '-w' }
+let g:signify_vcs_list = [ 'git', 'svn' ]
+let g:signify_diffoptions = { 'git': '-w', 'svn': '-w' }
 let g:signify_sign_add = '+'
 let g:signify_sign_change = '~'
 let g:signify_sign_delete = '_'

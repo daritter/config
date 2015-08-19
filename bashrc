@@ -4,10 +4,28 @@ case $- in
       *) return;;
 esac
 
+#Make sure that there are no duplicates in path variables
+#Optionally, the arguments 2 and 3 are prepended and appended respectively for
+#use with append_path and prepend_path
+function clean_path (){
+    eval OLD_PATH=\$$1
+    #This line is kind of long and awkward ...
+    NEW_PATH=`echo "$2$OLD_PATH$3" | awk -F: '{for (i=1;i<=NF;i++) { if ( !x[$i]++ ) { if(i>1) printf(":"); printf("%s",$i); }}}'`
+    export $1=$NEW_PATH
+}
+#Append value to path variable and remove duplicates
+function append_path (){
+    clean_path $1 "" :$2
+}
+#Prepend value to path variable and remove duplicates
+function prepend_path (){
+    clean_path $1 $2: ""
+}
+
 export SOFTWARE_WORK=~/work
 export SOFTWARE_LOCAL=~/local
-export PATH=~/.local/bin:$SOFTWARE_WORK/bin:$SOFTWARE_LOCAL/bin:$PATH
-export LD_LIBRARY_PATH=$SOFTWARE_WORK/lib:$SOFTWARE_LOCAL/lib:$LD_LIBRARY_PATH
+prepend_path PATH ~/.local/bin:$SOFTWARE_WORK/config/bin:$SOFTWARE_LOCAL/bin
+prepend_path LD_LIBRARY_PATH $SOFTWARE_LOCAL/lib
 export PYTHONPATH=$SOFTWARE_WORK/python:$SOFTWARE_LOCAL/lib/python2.7/site-packages
 export TEXMFHOME=$SOFTWARE_WORK/texmf
 export EDITOR=vim
@@ -83,19 +101,13 @@ fi
 # enable texlive distribution and check more than one directory
 for TEXLIVE in ~/local/texlive /usr/local/texlive/2015; do
     if [ -d $TEXLIVE ]; then
-        export PATH=$TEXLIVE/bin/x86_64-linux:$PATH
+        prepend_path PATH $TEXLIVE/bin/x86_64-linux
         export TEXLIVE
         break;
     fi
 done
 
-export AFS=/afs/ipp/home/m/mritter
-export BH=/afs/ipp/mpp/belle
-
-alias afslogin='klog.afs -principal mritter -cell ipp-garching.mpg.de'
-alias rzg='ssh -Y mritter@mpiui1.t2.rzg.mpg.de'
 alias vnc='xtightvncviewer -encodings "copyrect tight hextile zlib corre rre raw"'
-alias vim='gvim -v'
 alias belle2=". ~/belle2/software/setup.sh"
 
 function my_alert(){

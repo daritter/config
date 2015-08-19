@@ -19,10 +19,14 @@ else:
     b2ext = os.environ["BELLE2_EXTERNALS_DIR"]
     subdir = os.environ.get('BELLE2_EXTERNALS_SUBDIR',
                             os.environ['BELLE2_SUBDIR'])
-    includes.append("%s/include" % b2ext)
-    for ext in ["", "CLHEP", "Geant4", "vgm", "genfit", "HepMC", "pythia",
-                "Photos", "Tauola", "evtgen", "FLC", "Eigen"]:
-        includes.append("%s/include/%s" % (b2ext, ext))
+    # includes.append("%s/include" % b2ext)
+    extinc = os.path.join(b2ext, "include")
+    for dir, dirs, files in os.walk(extinc):
+        for d in dirs:
+            if d in ["Vc", "pqxx"]:
+                continue
+            includes.append(os.path.join(extinc, d))
+        del dirs[:]
     includes.append(os.path.join(b2ext, "root", subdir, "include"))
     includes.append(sysconfig.get_python_inc())
     includes.append("/usr/include/libxml2")
