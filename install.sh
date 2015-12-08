@@ -7,6 +7,7 @@ SCRIPTPATH=`pwd`
 # make vim tmp dir
 mkdir -p vim/tmp
 
+mkdir -p ~/.config/autostart
 cat > ~/.config/autostart/evincesync.desktop <<EOT
 [Desktop Entry]
 Type=Application
@@ -22,10 +23,10 @@ function install_link () {
     src=$1
     dest=$2
     if [[ -e $dest && ! -L $dest ]]; then
-        echo mkdir -p bak
-        echo mv $dest bak/$src
+        mkdir -p bak
+        mv $dest bak/$src
     fi
-    echo ln -sf `pwd`/$src $dest
+    ln -sfT `pwd`/$src $dest
 }
 
 for file in bashrc ctags.conf gitconfig vim vimrc; do
