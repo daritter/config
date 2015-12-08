@@ -9,15 +9,26 @@ flags = [
     '-fexceptions',
     '-x', 'c++',
     '-std=c++11',
+    '-nostdinc++',
 ]
 
+# adjust clang to find gcc c++ includes
+gcc_search_path = subprocess.check_output(["g++", "-v", "-x", "c++", "--syntax-only", "/dev/null"], stderr=subprocess.STDOUT)
+is_search_path = False
+for line in gcc_search_path.splitlines():
+    if line.startswith("End of search list"):
+        break
+    # ok, here we process all lines in the g++ default include path. If they
+    # have c++ in the name we take them
+    if is_search_path and line.find("c++") >= 0:
+        flags.append("-isystem%s" % line.strip())
+    # search path starts after this line
+    if line.startswith("#include <...> search starts here:"):
+        is_search_path = True
+
 try:
-    rconf = subprocess.Popen(["root-config", "--cflags"],
-                             stdout=subprocess.PIPE,
-                             stderr=subprocess.PIPE)
-    rout = rconf.communicate()[0]
-    if rconf.wait() == 0:
-        flags += rout.strip().split()
+    rconf = subprocess.check_output(["root-config", "--cflags"])
+    flags += rconf.strip().split()
 except OSError:
     pass
 

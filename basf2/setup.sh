@@ -1,3 +1,4 @@
+export BELLE2_SYSTEM_PYTHON=1
 #Need no stinking version check for tools
 export BELLE2_NO_TOOLS_CHECK=true
 #... unless we want to of course

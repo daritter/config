@@ -117,7 +117,7 @@ let g:syntastic_enable_balloons = 1
 let g:syntastic_enable_highlighting = 1
 let g:syntastic_id_checkers = 1
 let g:syntastic_python_checkers = ['python', 'pyflakes', 'pep8']
-let g:syntastic_python_pep8_args = "--max-line-length=120"
+let g:syntastic_python_pep8_args = "--max-line-length=132"
 let g:syntastic_error_symbol = "▸"
 let g:syntastic_warning_symbol = "▸"
 let g:syntastic_style_error_symbol = "▹"
@@ -131,7 +131,7 @@ let g:ycm_extra_conf_globlist = [resolve(expand('~/basf2/')) . '*', resolve(expa
 
 "vim airline
 set t_Co=16
-set laststatus=2 guifont=Ubuntu\ Mono\ derivative\ Powerline\ 13
+set laststatus=2 guifont=Hack\ Regular\ 12
 "if has("gui_running")
 let g:airline_theme='solarized'
 set background=light

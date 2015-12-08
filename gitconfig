@@ -5,6 +5,10 @@
     default = simple
 [alias]
     fixstyle = ! git diff --cached --name-status | cut -f2- | xargs fixstyle
+    checkstyle = ! git diff --cached --name-status | cut -f2- | xargs checkstyle
     wdiff = diff --color-words
 [svn]
     rmdir = true
+[merge]
+	tool = gvimdiff
+	conflictstyle = diff3

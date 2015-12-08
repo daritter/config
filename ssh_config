@@ -28,6 +28,10 @@ Host reverse-lmu-mpp
     ServerAliveCountMax 3
     ServerAliveInterval 60
 
+Host kuhrios
+    Hostname 10.155.59.52
+    User ritter
+
 Host lmu
     User ritter
     Hostname localhost

@@ -1,16 +1,19 @@
-#!/usr/bin/env python
-# coding: utf8
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
 import pickle
 import sys
 import os
 import re
 from subprocess import check_output, call, CalledProcessError
 
+# @cond internal_test
+
 # Get Belle2 environment variables
 try:
     LOCAL_DIR = os.environ["BELLE2_LOCAL_DIR"]
 except KeyError:
-    print "Belle II software not correctly set up, aborting"
+    print("Belle II software not correctly set up, aborting")
     sys.exit(1)
 
 
@@ -74,27 +77,27 @@ class SvnExternalsCache(object):
             raise ValueError("svn::externals '%s' line could not be parsed" % line)
         return match.groups()
 
-
     def get(self, revision, path):
         """Get the svn:externals for a path in a given revision.
         Returns a list of (dirname, revision, url) tuples, one for each entry
         in the svn:externals property. If property is not set an empty list is
         returned."""
         key = (revision, path)
-        if key in self._externalcache: return self._externalcache[key]
+        if key in self._externalcache:
+            return self._externalcache[key]
 
         data = []
         try:
             prop = check_output(["git", "svn", "propget", "-r%s" % current_revision, "svn:externals", path])
 
-            for line in prop.splitlines():
+            for line in prop.decode().splitlines():
                 if not line.strip():
                     continue
                 else:
                     try:
                         data.append(self.parse_external(line))
-                    except ValueError, e:
-                        print "Error parsing externals %s for r%s: %s" % (external, revision, path)
+                    except ValueError as e:
+                        print("Error parsing externals %s for r%s: %s" % (external, revision, path))
         except CalledProcessError:
             # Apparently no externals here, move on
             pass
@@ -108,7 +111,8 @@ class SvnExternalsCache(object):
         the one in cache."""
         current_revision = self._revisioncache.get(path, None)
         self._revisioncache[path] = revision
-        if revision is None: return False
+        if revision is None:
+            return False
         return current_revision == revision
 
 
@@ -152,7 +156,7 @@ else:
     current_revision = find_svnrevision()
 
 if current_revision is None:
-    print "Cannot determine SVN revision, cannot check for externals"
+    print("Cannot determine SVN revision, cannot check for externals")
     sys.exit(1)
 
 # Let's change into the release dir
@@ -165,37 +169,37 @@ if os.path.exists(".gitignore"):
     gitignore = f.readlines()
     f.close()
 
-print "Checking svn:externals for r%s" % current_revision
+print("Checking svn:externals for r%s" % current_revision)
 
 with SvnExternalsCache() as cache:
     for e in externals:
-        print "directory '%s'" % e
+        print("directory '%s'" % e)
 
         for dirname, revision, url in cache.get(current_revision, e):
             path = os.path.join(e, dirname)
             abspath = os.path.join(LOCAL_DIR, e, dirname)
             if cache.check_revision(abspath, revision):
-                print "%s already up to date" % path
+                print("%s already up to date" % path)
                 continue
             # Build command line for svn
             args = ["svn"]
             if os.path.exists(abspath):
                 # Seems to exist already, so update to specified revision
-                print "Updating", path,
+                print("Updating", path, end=' ')
                 args.append("update")
             else:
                 # Not there yet, checkout using svn
-                print "Fetching", path,
-                print "from", url,
+                print("Fetching", path, end=' ')
+                print("from", url, end=' ')
                 args += ["checkout", url]
 
             # If revision is specified, add it after the svn command
             if revision is not None:
-                print "r" + revision,
+                print("r" + revision, end=' ')
                 args.insert(2, "-r" + revision)
 
             # finish line
-            print
+            print()
             call(args + [abspath])
 
             # Check if it is already excluded
@@ -209,3 +213,5 @@ with SvnExternalsCache() as cache:
 f = open(".gitignore", "w")
 f.writelines(gitignore)
 f.close()
+
+# @endcond
