@@ -38,11 +38,12 @@ function prepend_path (){
 }
 
 if [ -f /usr/bin/distcc ]; then
+    mkdir -p $BELLE2_LOCAL_DIR/bin/distcc
     for shadow in gcc g++ gfortran rootcling ld; do
-        ln -sfT /usr/bin/distcc $BELLE2_LOCAL_DIR/bin/$BELLE2_SUBDIR/$shadow;
+        ln -sfT /usr/bin/distcc $BELLE2_LOCAL_DIR/bin/distcc/$shadow;
     done
     # make sure path comes before externals
-    prepend_path PATH $BELLE2_LOCAL_DIR/bin/$BELLE2_SUBDIR
+    prepend_path PATH $BELLE2_LOCAL_DIR/bin/distcc/
 
     export DISTCC_DIR=/var/run/user/$UID/distcc
     export DISTCC_COMMON="--localslots=8 --localslots_cpp=40"
