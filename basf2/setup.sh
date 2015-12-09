@@ -18,6 +18,45 @@ source ../tools/setup_belle2.sh
 setoption opt
 #It's a TRAP ... I mean setup ... never mind
 setuprel
+
+#Make sure that there are no duplicates in path variables
+#Optionally, the arguments 2 and 3 are prepended and appended respectively for
+#use with append_path and prepend_path
+function clean_path (){
+    eval OLD_PATH=\$$1
+    #This line is kind of long and awkward ...
+    NEW_PATH=`echo "$2$OLD_PATH$3" | awk -F: '{for (i=1;i<=NF;i++) { if ( !x[$i]++ ) { if(i>1) printf(":"); printf("%s",$i); }}}'`
+    export $1=$NEW_PATH
+}
+#Append value to path variable and remove duplicates
+function append_path (){
+    clean_path $1 "" :$2
+}
+#Prepend value to path variable and remove duplicates
+function prepend_path (){
+    clean_path $1 $2: ""
+}
+
+if [ -f /usr/bin/distcc ]; then
+    for shadow in gcc g++ gfortran rootcling ld; do
+        ln -sfT /usr/bin/distcc $BELLE2_LOCAL_DIR/bin/$BELLE2_SUBDIR/$shadow;
+    done
+    # make sure path comes before externals
+    prepend_path PATH $BELLE2_LOCAL_DIR/bin/$BELLE2_SUBDIR
+
+    export DISTCC_DIR=/var/run/user/$UID/distcc
+    export DISTCC_COMMON="--localslots=8 --localslots_cpp=40"
+    mkdir -p $DISTCC_DIR
+
+    distcc_remote() {
+        export DISTCC_HOSTS="$DISTCC_COMMON 10.155.59.52/40,lzo"
+    }
+    distcc_local() {
+        export DISTCC_HOSTS="$DISTCC_COMMON localhost/8"
+    }
+    distcc_local
+fi
+
 #Done here, go back home
 popd > /dev/null
 
