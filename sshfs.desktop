@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Exec=sh -c "sshfs kuhrios:/home/ritter /home/ritter/kuhrios/home && sshfs kuhrios:/srv/data/ritter /home/ritter/kuhrios/data"
+Hidden=false
+NoDisplay=false
+X-GNOME-Autostart-enabled=true
+Name=SSH fs for kuhrios
+Comment=SSH fs for kuhrios home and data directories
