@@ -16,7 +16,7 @@ Host mpp
 # use with autossh -M 0 -f -- ssh -fN reverse-lmu-mpp to create reverse ssh
 # tunnel to connect back to lmu
 Host reverse-lmu-mpp
-    Hostname pcbelle15.mpp.mpg.de
+    Hostname 138.246.99.233
     User ritter
     ConnectionAttempts 3
     TCPKeepAlive no
@@ -29,8 +29,12 @@ Host reverse-lmu-mpp
     ServerAliveInterval 60
 
 Host kuhrios
-    Hostname 10.155.59.52
+    Hostname 138.246.99.233
     User ritter
+    ForwardX11 yes
+    ForwardX11Trusted yes
+    TCPKeepAlive yes
+    ServerAliveInterval 20
 
 Host lmu
     User ritter
@@ -44,7 +48,7 @@ Host lmu
     ForwardX11Trusted yes
     Compression yes
     # connect using mpp as proxy
-    ProxyCommand ssh mpp -W %h:%p
+    ProxyCommand ssh kuhrios -W %h:%p
 
 Host c2pap
     User ru75gog2
