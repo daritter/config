@@ -1,5 +1,13 @@
 *.py[cod]
+*.{orig
+*.rej
 *.bak
+*.patch
+*.root
+*.log
+Belle2FileCatalog.xml
+centraldb
+localdb
 
 #Why o why
 gbl.output

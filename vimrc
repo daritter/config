@@ -85,7 +85,7 @@ set showmatch		 " Show matching brackets.
 set ignorecase smartcase " Do case insensitive matching unless pattern contains upper case letters
 set incsearch		 " Incremental search
 set autowrite            " Automatically save before commands like :next and :make
-set diffopt+=iwhite
+set diffopt+=iwhite,vertical
 set wildmenu wildmode=longest,list
 set autoindent expandtab shiftwidth=4 softtabstop=4
 " Suffixes that get lower priority when doing tab completion for filenames.
