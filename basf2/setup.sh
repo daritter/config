@@ -37,7 +37,7 @@ function prepend_path (){
     clean_path $1 $2: ""
 }
 
-if [ -f /usr/bin/distcc ]; then
+if [ -n $BELLE2_DISTCC ] && [ -f /usr/bin/distcc ]; then
     mkdir -p $BELLE2_LOCAL_DIR/bin/distcc
     for shadow in gcc g++ gfortran rootcling ld; do
         ln -sfT /usr/bin/distcc $BELLE2_LOCAL_DIR/bin/distcc/$shadow;
@@ -50,13 +50,17 @@ if [ -f /usr/bin/distcc ]; then
     mkdir -p $DISTCC_DIR
 
     distcc_remote() {
-        export DISTCC_HOSTS="$DISTCC_COMMON 10.155.59.52/40,lzo"
+        export DISTCC_HOSTS="$DISTCC_COMMON kuhrios/40,lzo"
     }
     distcc_local() {
         export DISTCC_HOSTS="$DISTCC_COMMON localhost/8"
     }
     distcc_local
 fi
+
+#Now let's remove the useless file catalog things and database caches
+find -name Belle2FileCatalog.xml -delete
+find -name localdb -o -name centraldb -exec rm -fr {} +
 
 #Done here, go back home
 popd > /dev/null
