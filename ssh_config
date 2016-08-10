@@ -3,6 +3,8 @@ Host mpp
     User ritter
     # hostname to use when "ssh mpp"
     HostName pcbelle15.mpp.mpg.de
+    ForwardX11 yes
+    ForwardX11Trusted yes
     # use control hub. This will send all additional connections to mpp through
     # the same socket so no additional connection needs to be established
     ControlMaster auto
@@ -128,3 +130,31 @@ Host pxdtest2 pxdtest3 pxdtest4 iuno bellona
     User hybrid5
     # connect using betria as proxy
     ProxyCommand ssh adorea -W %h:%p
+
+Host b2stash
+    User git
+    HostName stash.desy.de
+    Port 7999
+
+Host b2-master
+    User b2soft
+    HostName b2-master.belle2.org
+    ProxyCommand ssh bastion.desy.de -W %h:%p
+
+Host bastion.desy.de
+    User ritter
+    # use control hub to use only one ssh channel for all kekcc connections
+    ControlMaster auto
+    ControlPath /tmp/%u-ssh-%r@%h:%p
+    ControlPersist 600
+    #Use fast encryption algorithms
+    Ciphers arcfour
+    CheckHostIP no
+    #Forward SSH Key Agent, this allows to log back into MPI machines using
+    #your local private key
+    ForwardAgent yes
+    #No X11 to Japan
+    ForwardX11 no
+    ForwardX11Trusted no
+    # But Compression would be nice
+    Compression yes
