@@ -1,4 +1,5 @@
 import os
+from distutils import sysconfig
 import subprocess
 flags = [
     '-Wall',
@@ -11,6 +12,7 @@ flags = [
     '-std=c++11',
     '-nostdinc++',
 ]
+includes = []
 
 # adjust clang to find gcc c++ includes
 gcc_search_path = subprocess.check_output(["g++", "-v", "-x", "c++", "--syntax-only", "/dev/null"], stderr=subprocess.STDOUT)
@@ -26,34 +28,36 @@ for line in gcc_search_path.splitlines():
     if line.startswith("#include <...> search starts here:"):
         is_search_path = True
 
-try:
-    rconf = subprocess.check_output(["root-config", "--cflags"])
-    flags += rconf.strip().split()
-except OSError:
-    pass
-
-belle_top_dir = os.environ.get("BELLE_TOP_DIR", "/belle/belle/b20090127_0910")
-if os.path.exists(belle_top_dir):
-    flags += ["-isystem", os.path.join(belle_top_dir, "include")]
-
-#Path to boost installation if neccessary
-for incpath in ["/remote/pcbelle03/ritter/local/include", "/usr/lib/openmpi/include", "/usr/lib/openmpi/include/openmpi"]:
-    if os.path.exists(incpath):
-        flags += ["-isystem", incpath]
-
-scriptdir = os.path.abspath(os.path.dirname(__file__))
+b2dir = os.environ.get("BELLE2_LOCAL_DIR", None)
+if not b2dir:
+    print "Belle2 not set up correctly."
+else:
+    b2ext = os.environ["BELLE2_EXTERNALS_DIR"]
+    extinc = os.path.join(b2ext, "include")
+    includes.append(extinc)
+    for dir, dirs, files in os.walk(extinc):
+        for d in dirs:
+            if d in ["Vc", "pqxx"]:
+                continue
+            includes.append(os.path.join(extinc, d))
+        del dirs[:]
 
 
 def FlagsForFile(filename, **kwargs):
+    global includes
     # Add all include directories in parent directories to the include path
     dirname = os.path.dirname(filename)
+    local_includes = []
     while True:
         incdir = os.path.join(dirname, "include")
         if os.path.isdir(incdir):
-            flags.append("-I" + incdir)
+            local_includes.insert(0, incdir)
         dirname = os.path.dirname(dirname)
         print dirname
         if not dirname.strip(os.path.sep):
             break
 
-    return {"flags": flags, "do_cache": True}
+    all_includes = local_includes + includes
+
+    return {"flags": flags + ["-I%s" % e for e in all_includes],
+            "do_cache": True}

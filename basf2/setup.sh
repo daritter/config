@@ -37,30 +37,38 @@ function prepend_path (){
     clean_path $1 $2: ""
 }
 
-if [ -n $BELLE2_DISTCC ] && [ -f /usr/bin/distcc ]; then
-    mkdir -p $BELLE2_LOCAL_DIR/bin/distcc
-    for shadow in gcc g++ gfortran rootcling ld; do
-        ln -sfT /usr/bin/distcc $BELLE2_LOCAL_DIR/bin/distcc/$shadow;
+# if [ -n $BELLE2_DISTCC ] && [ -f /usr/bin/distcc ]; then
+    # mkdir -p $BELLE2_LOCAL_DIR/bin/distcc
+    # for shadow in gcc g++ gfortran rootcling ld; do
+        # ln -sfT /usr/bin/distcc $BELLE2_LOCAL_DIR/bin/distcc/$shadow;
+    # done
+    # # make sure path comes before externals
+    # prepend_path PATH $BELLE2_LOCAL_DIR/bin/distcc/
+
+    # export DISTCC_DIR=/var/run/user/$UID/distcc
+    # export DISTCC_COMMON="--localslots=8 --localslots_cpp=40"
+    # mkdir -p $DISTCC_DIR
+
+    # distcc_remote() {
+        # export DISTCC_HOSTS="$DISTCC_COMMON kuhrios/40,lzo"
+    # }
+    # distcc_local() {
+        # export DISTCC_HOSTS="$DISTCC_COMMON localhost/8"
+    # }
+    # distcc_local
+# fi
+
+if hash ccache 2>/dev/null; then
+    mkdir -p $BELLE2_LOCAL_DIR/bin/ccache
+    for shadow in gcc g++ cc c++; do
+        ln -sfT `which ccache` $BELLE2_LOCAL_DIR/bin/ccache/$shadow
     done
-    # make sure path comes before externals
-    prepend_path PATH $BELLE2_LOCAL_DIR/bin/distcc/
-
-    export DISTCC_DIR=/var/run/user/$UID/distcc
-    export DISTCC_COMMON="--localslots=8 --localslots_cpp=40"
-    mkdir -p $DISTCC_DIR
-
-    distcc_remote() {
-        export DISTCC_HOSTS="$DISTCC_COMMON kuhrios/40,lzo"
-    }
-    distcc_local() {
-        export DISTCC_HOSTS="$DISTCC_COMMON localhost/8"
-    }
-    distcc_local
+    prepend_path PATH $BELLE2_LOCAL_DIR/bin/ccache
 fi
 
 #Now let's remove the useless file catalog things and database caches
 find -name Belle2FileCatalog.xml -delete
-find -name localdb -o -name centraldb -exec rm -fr {} +
+find -name centraldb -exec rm -fr {} +
 
 #Done here, go back home
 popd > /dev/null

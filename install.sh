@@ -38,8 +38,6 @@ install_link ssh_config ~/.ssh/config
 if [[ -e ~/belle2/software ]]; then
     install_link basf2/setup.sh ~/belle2/software/setup.sh
     install_link basf2/gitignore ~/belle2/software/.gitignore
-    install_link basf2/githooks ~/belle2/software/.git/hooks
-    install_link basf2/ycm_extra_conf.py ~/belle2/software/.ycm_extra_conf.py
 fi
 
 popd > /dev/null
