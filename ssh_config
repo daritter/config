@@ -82,7 +82,7 @@ Host kek
     #Use fast encryption algorithms
     Ciphers arcfour
     CheckHostIP no
-    #Forward SSH Key Agent, this allows to log back into MPI machines using
+    #Forward SSH Key Agent, this allows to log back into home machines using
     #your local private key
     ForwardAgent yes
     #No X11 to Japan
@@ -90,10 +90,9 @@ Host kek
     ForwardX11Trusted no
     # But Compression would be nice
     Compression yes
-    # connect using mpp as proxy
-    ProxyCommand ssh mpp -W %h:%p
     # try to keep the connection alive
     ServerAliveInterval 60
+    ProxyCommand ssh kuhrios -W %h:%p
 
 #Settings for internal machines
 Host pcbelle* pcilc* pxdtest* iuno bellona
@@ -160,3 +159,11 @@ Host bastion.desy.de
     ForwardX11Trusted no
     # But Compression would be nice
     Compression yes
+
+Host naf
+    User ritter
+    HostName nafhh-belle01.desy.de
+    ForwardAgent yes
+    ForwardX11 no
+    Compression yes
+    CheckHostIP no
