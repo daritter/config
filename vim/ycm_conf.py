@@ -15,7 +15,7 @@ flags = [
 includes = []
 
 # adjust clang to find gcc c++ includes
-gcc_search_path = subprocess.check_output(["g++", "-v", "-x", "c++", "--syntax-only", "/dev/null"], stderr=subprocess.STDOUT)
+gcc_search_path = subprocess.check_output(["g++", "-v", "-x", "c++", "--syntax-only", "/dev/null"], stderr=subprocess.STDOUT).decode()
 is_search_path = False
 for line in gcc_search_path.splitlines():
     if line.startswith("End of search list"):
@@ -53,7 +53,6 @@ def FlagsForFile(filename, **kwargs):
         if os.path.isdir(incdir):
             local_includes.insert(0, incdir)
         dirname = os.path.dirname(dirname)
-        print dirname
         if not dirname.strip(os.path.sep):
             break
 

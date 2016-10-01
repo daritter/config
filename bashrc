@@ -26,7 +26,7 @@ export SOFTWARE_WORK=~/work
 export SOFTWARE_LOCAL=~/local
 prepend_path PATH ~/.local/bin:$SOFTWARE_WORK/config/bin:$SOFTWARE_LOCAL/bin
 prepend_path LD_LIBRARY_PATH $SOFTWARE_LOCAL/lib
-export PYTHONPATH=$SOFTWARE_WORK/python:$SOFTWARE_LOCAL/lib/python2.7/site-packages
+#export PYTHONPATH=$SOFTWARE_WORK/python:$SOFTWARE_LOCAL/lib/python2.7/site-packages
 export TEXMFHOME=$SOFTWARE_WORK/texmf
 export EDITOR=vim
 

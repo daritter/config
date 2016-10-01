@@ -1,5 +1,5 @@
 "Additional vimrc to be loaded for files inside the belle2 software dir
-python << EOF
+python3 << EOF
 import os
 import vim
 from distutils import sysconfig
