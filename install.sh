@@ -37,7 +37,6 @@ install_link ssh_config ~/.ssh/config
 
 if [[ -e ~/belle2/software ]]; then
     install_link basf2/setup.sh ~/belle2/software/setup.sh
-    install_link basf2/gitignore ~/belle2/software/.gitignore
 fi
 
 popd > /dev/null
