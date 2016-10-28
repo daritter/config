@@ -160,3 +160,22 @@ Host bastion.desy.de
     ForwardX11Trusted no
     # But Compression would be nice
     Compression yes
+
+Host naf
+    HostName nafhh-belle01.desy.de
+    User ritter
+    # use control hub to use only one ssh channel for all kekcc connections
+    ControlMaster auto
+    ControlPath ~/.ssh/ssh-%r@%h:%p.control
+    ControlPersist 600
+    Ciphers arcfour
+    CheckHostIP no
+    #Forward SSH Key Agent, this allows to log back into MPI machines using
+    #your local private key
+    ForwardAgent yes
+    #No X11 to Japan
+    ForwardX11 no
+    ForwardX11Trusted no
+    # But Compression would be nice
+    Compression yes
+    ProxyCommand ssh bastion.desy.de -W %h:%p
