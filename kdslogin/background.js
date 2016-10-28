@@ -1,7 +1,7 @@
 console.log("Adding KEK kds login callback");
 
 function kds_login(details, callback) {
-    var match = details.realm.match(/password:\s*(.*?)\s*\(/);
+    var match = details.realm.match(/password:\s*(.*)/);
     if(match){
         var password = match[1].replace(" ", "");
         console.log("Logging in to kds with user 'kds', password '" + password + "'");

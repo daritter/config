@@ -90,8 +90,7 @@ Host kek
     ForwardX11Trusted no
     # But Compression would be nice
     Compression yes
-    # connect using mpp as proxy
-    ProxyCommand ssh mpp -W %h:%p
+    ProxyCommand ssh kuhrios -W %h:%p
     # try to keep the connection alive
     ServerAliveInterval 60
 
@@ -178,4 +177,3 @@ Host naf
     ForwardX11Trusted no
     # But Compression would be nice
     Compression yes
-    ProxyCommand ssh bastion.desy.de -W %h:%p
