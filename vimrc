@@ -98,6 +98,7 @@ let g:syntastic_error_symbol = "▸"
 let g:syntastic_warning_symbol = "▸"
 let g:syntastic_style_error_symbol = "▹"
 let g:syntastic_style_warning_symbol = "▹"
+let g:syntastic_python_python_exec = 'python3'
 
 "YouCompleteME
 let g:ycm_python_binary_path = '/usr/bin/python3'
