@@ -3,6 +3,8 @@
     name = Martin Ritter
 [push]
     default = simple
+[rebase]
+    autoStash = true
 [alias]
     fixstyle = ! git diff --cached --name-status | cut -f2- | xargs fixstyle
     checkstyle = ! git diff --cached --quiet || checkstyle `git diff --cached --name-only`
