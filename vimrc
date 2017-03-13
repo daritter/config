@@ -28,7 +28,7 @@ Bundle 'vim-airline/vim-airline'
 Bundle 'vim-airline/vim-airline-themes'
 Bundle 'tpope/vim-fugitive'
 Bundle 'mhinz/vim-signify'
-Bundle 'git://git.code.sf.net/p/vim-latex/vim-latex'
+Bundle 'vim-latex/vim-latex'
 Bundle 'klen/python-mode'
 Bundle 'hdima/python-syntax'
 Bundle 'majutsushi/tagbar'
@@ -91,8 +91,9 @@ let g:syntastic_enable_signs = 1
 let g:syntastic_enable_balloons = 1
 let g:syntastic_enable_highlighting = 1
 let g:syntastic_id_checkers = 1
-let g:syntastic_python_checkers = ['python', 'pyflakes', 'pep8']
-let g:syntastic_python_pep8_args = "--max-line-length=132"
+let g:syntastic_python_checkers = ['python', 'pylama', 'pycodestyle']
+let g:syntastic_python_pycodestyle_args = "--max-line-length=132"
+let g:syntastic_python_pylama_args = "-o ~/work/config/pylama.ini"
 let g:syntastic_error_symbol = "▸"
 let g:syntastic_warning_symbol = "▸"
 let g:syntastic_style_error_symbol = "▹"

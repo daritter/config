@@ -1,10 +1,8 @@
 import os
-from distutils import sysconfig
 import subprocess
 flags = [
     '-Wall',
     '-Wextra',
-#    '-Werror',
     '-Wno-long-long',
     '-Wno-variadic-macros',
     '-fexceptions',
@@ -15,7 +13,8 @@ flags = [
 includes = []
 
 # adjust clang to find gcc c++ includes
-gcc_search_path = subprocess.check_output(["g++", "-v", "-x", "c++", "--syntax-only", "/dev/null"], stderr=subprocess.STDOUT).decode()
+gcc_search_path = subprocess.check_output(["g++", "-v", "-x", "c++", "--syntax-only", "/dev/null"],
+                                          stderr=subprocess.STDOUT).decode()
 is_search_path = False
 for line in gcc_search_path.splitlines():
     if line.startswith("End of search list"):
@@ -30,7 +29,7 @@ for line in gcc_search_path.splitlines():
 
 b2dir = os.environ.get("BELLE2_LOCAL_DIR", None)
 if not b2dir:
-    print "Belle2 not set up correctly."
+    print("Belle2 not set up correctly.")
 else:
     b2ext = os.environ["BELLE2_EXTERNALS_DIR"]
     extinc = os.path.join(b2ext, "include")

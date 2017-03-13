@@ -1,4 +1,3 @@
-export BELLE2_SYSTEM_PYTHON=1
 #Need no stinking version check for tools
 export BELLE2_NO_TOOLS_CHECK=true
 #... unless we want to of course
@@ -7,6 +6,7 @@ if [ "$1" == "check" ]; then
 fi
 
 export BELLE2_BACKGROUND_DIR=~/belle2/bkg/
+export GIT_AUTHOR_EMAIL=martin.ritter@desy.de
 
 # Find out where we want to be
 BELLE2_LOCAL_DIR=`dirname $BASH_SOURCE`

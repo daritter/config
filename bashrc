@@ -26,8 +26,6 @@ export SOFTWARE_WORK=~/work
 export SOFTWARE_LOCAL=~/local
 prepend_path PATH ~/.local/bin:$SOFTWARE_WORK/config/bin:$SOFTWARE_LOCAL/bin
 prepend_path LD_LIBRARY_PATH $SOFTWARE_LOCAL/lib
-#export PYTHONPATH=$SOFTWARE_WORK/python:$SOFTWARE_LOCAL/lib/python2.7/site-packages
-export TEXMFHOME=$SOFTWARE_WORK/texmf
 export EDITOR=vim
 
 # don't put duplicate lines or lines starting with space in the history.
@@ -99,7 +97,7 @@ if ! shopt -oq posix; then
 fi
 
 # enable texlive distribution and check more than one directory
-for TEXLIVE in ~/local/texlive /usr/local/texlive/2015; do
+for TEXLIVE in ~/local/texlive /usr/local/texlive/2016 /usr/local/texlive/2015; do
     if [ -d $TEXLIVE ]; then
         prepend_path PATH $TEXLIVE/bin/x86_64-linux
         export TEXLIVE
