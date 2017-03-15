@@ -62,7 +62,8 @@ set incsearch		 " Incremental search
 set autowrite            " Automatically save before commands like :next and :make
 set diffopt+=iwhite,vertical
 set wildmenu wildmode=longest,list
-set autoindent expandtab shiftwidth=4 softtabstop=4
+set autoindent expandtab shiftwidth=2 softtabstop=2 cino=g0,hs
+autocmd FileType python setlocal shiftwidth=2 softtabstop=2
 " Suffixes that get lower priority when doing tab completion for filenames.
 " These are files we are not likely to want to edit or read.
 set suffixes=.bak,~,.swp,.o,.info,.aux,.log,.dvi,.bbl,.blg,.brf,.cb,.ind,.idx,.ilg,.inx,.out,.toc
@@ -92,6 +93,8 @@ let g:syntastic_enable_balloons = 1
 let g:syntastic_enable_highlighting = 1
 let g:syntastic_id_checkers = 1
 let g:syntastic_python_checkers = ['python', 'pylama', 'pycodestyle']
+"cpp is checked by YouCompleteMe
+let g:syntastic_cpp_checkers = []
 let g:syntastic_python_pycodestyle_args = "--max-line-length=132"
 let g:syntastic_python_pylama_args = "-o ~/work/config/pylama.ini"
 let g:syntastic_error_symbol = "▸"

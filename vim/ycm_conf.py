@@ -1,8 +1,9 @@
 import os
 import subprocess
 flags = [
-    '-Wall',
-    '-Wextra',
+    '-Weverything',
+    '-Wno-c++98-compat',
+    '-Wno-exit-time-destructors',
     '-Wno-long-long',
     '-Wno-variadic-macros',
     '-fexceptions',
