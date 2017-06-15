@@ -33,7 +33,7 @@ Bundle 'klen/python-mode'
 Bundle 'hdima/python-syntax'
 Bundle 'majutsushi/tagbar'
 Bundle 'nathanaelkane/vim-indent-guides'
-Bundle 'perdirvimrc--Autoload-vimrc-files-per-di'
+"Bundle 'perdirvimrc--Autoload-vimrc-files-per-di'
 Bundle 'bogado/file-line'
 if iCanHazVundle == 0
     echo "Installing Bundles, please ignore key map error messages"
@@ -92,10 +92,9 @@ let g:syntastic_enable_signs = 1
 let g:syntastic_enable_balloons = 1
 let g:syntastic_enable_highlighting = 1
 let g:syntastic_id_checkers = 1
-let g:syntastic_python_checkers = ['python', 'pylama', 'pycodestyle']
+let g:syntastic_python_checkers = ['python', 'pylama']
 "cpp is checked by YouCompleteMe
 let g:syntastic_cpp_checkers = []
-let g:syntastic_python_pycodestyle_args = "--max-line-length=132"
 let g:syntastic_python_pylama_args = "-o ~/work/config/pylama.ini"
 let g:syntastic_error_symbol = "▸"
 let g:syntastic_warning_symbol = "▸"
