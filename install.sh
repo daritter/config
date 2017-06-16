@@ -29,7 +29,7 @@ function install_link () {
     ln -sfT `pwd`/$src $dest
 }
 
-for file in bashrc ctags.conf gitconfig vim vimrc; do
+for file in bashrc ctags.conf gitconfig vim vimrc gdbinit; do
     install_link $file ~/.$file
 done
 
