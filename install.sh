@@ -23,7 +23,7 @@ function install_link () {
     src=$1
     dest=$2
     if [[ -e $dest && ! -L $dest ]]; then
-        mkdir -p bak
+        mkdir -p bak/`dirname $src`
         mv $dest bak/$src
     fi
     ln -sfT `pwd`/$src $dest
