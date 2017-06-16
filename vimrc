@@ -201,7 +201,7 @@ function! PrintFile(fname)
 endfunc
 
 function! ListFiles()
-python << EOF
+python3 << EOF
 import vim
 files = []
 for b in vim.buffers:

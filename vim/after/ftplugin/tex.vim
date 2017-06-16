@@ -24,7 +24,7 @@ let g:Tex_FoldedMisc=""
 setlocal nofoldenable
 
 function! Tex_ForwardSearchLaTeX()
-python << EOF
+python3 << EOF
 import vim
 import os
 import dbus
@@ -39,8 +39,8 @@ try:
     daemon = bus.get_object('org.gnome.evince.Daemon', '/org/gnome/evince/Daemon')
     dbus_name = daemon.FindDocument('file://' + pdf_file, True, dbus_interface = "org.gnome.evince.Daemon")
     window = bus.get_object(dbus_name, '/org/gnome/evince/Window/0')
-except dbus.DBusException, e:
-    print e
+except dbus.DBusException as e:
+    print(e)
 
 window.SyncView(tex_file, (line_number,1), 0, dbus_interface="org.gnome.evince.Window")
 EOF
