@@ -93,6 +93,7 @@ let g:syntastic_enable_balloons = 1
 let g:syntastic_enable_highlighting = 1
 let g:syntastic_id_checkers = 1
 let g:syntastic_python_checkers = ['python', 'pylama']
+let g:syntastic_rst_checkers = ['sphinx']
 "cpp is checked by YouCompleteMe
 let g:syntastic_cpp_checkers = []
 let g:syntastic_python_pylama_args = "-o ~/work/config/pylama.ini"

@@ -58,12 +58,15 @@ function prepend_path (){
     # distcc_local
 # fi
 
+#if hash ccache 2>/dev/null; then
+#    mkdir -p $BELLE2_LOCAL_DIR/bin/ccache
+#    for shadow in gcc g++ cc c++; do
+#        ln -sfT `which ccache` $BELLE2_LOCAL_DIR/bin/ccache/$shadow
+#    done
+#    prepend_path PATH $BELLE2_LOCAL_DIR/bin/ccache
+#fi
 if hash ccache 2>/dev/null; then
-    mkdir -p $BELLE2_LOCAL_DIR/bin/ccache
-    for shadow in gcc g++ cc c++; do
-        ln -sfT `which ccache` $BELLE2_LOCAL_DIR/bin/ccache/$shadow
-    done
-    prepend_path PATH $BELLE2_LOCAL_DIR/bin/ccache
+  export BELLE2_USE_CCACHE=yes
 fi
 
 #Now let's remove the useless file catalog things and database caches
