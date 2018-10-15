@@ -13,11 +13,9 @@ BELLE2_LOCAL_DIR=`dirname $BASH_SOURCE`
 # and go there
 pushd $BELLE2_LOCAL_DIR > /dev/null
 #Let's open the tool box
-source ../tools/setup_belle2.sh
+source ../tools/b2setup.sh
 #Debug mode is for loosers and people with to much cpu power
-setoption opt
-#It's a TRAP ... I mean setup ... never mind
-setuprel
+b2code-option opt
 
 #Make sure that there are no duplicates in path variables
 #Optionally, the arguments 2 and 3 are prepended and appended respectively for
@@ -58,13 +56,6 @@ function prepend_path (){
     # distcc_local
 # fi
 
-#if hash ccache 2>/dev/null; then
-#    mkdir -p $BELLE2_LOCAL_DIR/bin/ccache
-#    for shadow in gcc g++ cc c++; do
-#        ln -sfT `which ccache` $BELLE2_LOCAL_DIR/bin/ccache/$shadow
-#    done
-#    prepend_path PATH $BELLE2_LOCAL_DIR/bin/ccache
-#fi
 if hash ccache 2>/dev/null; then
   export BELLE2_USE_CCACHE=yes
 fi
