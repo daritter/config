@@ -4,8 +4,39 @@ if exists("homevimrc_loaded")
 endif
 let homevimrc_loaded = 1
 
-" Setting up Vundle - the vim plugin bundler
+" Configuration file for vim
+set dir=~/.vim/tmp//	" Put swapfiles in vim dir
+set encoding=utf-8
+au GUIEnter * set columns=120 lines=40
 set nocompatible              " be iMproved
+set modeline
+set mousemodel=popup_setpos
+set mouse=a
+set viminfo=%,'20,<50,h
+set backspace=indent,eol,start	" more powerful backspacing
+set textwidth=0		 " Don't wrap words by default
+set nobackup		 " Don't keep a backup file
+set viminfo='20,\"50	 " read/write a .viminfo file, don't store more than 50 lines of registers
+set history=50		 " keep 50 lines of command line history
+set switchbuf=useopen,usetab,newtab
+set showcmd		 " Show (partial) command in status line.
+set showmatch		 " Show matching brackets.
+set ignorecase smartcase " Do case insensitive matching unless pattern contains upper case letters
+set incsearch		 " Incremental search
+set autowrite            " Automatically save before commands like :next and :make
+set diffopt+=iwhite,vertical
+set wildmenu wildmode=longest,list
+set autoindent expandtab shiftwidth=2 softtabstop=2 cino=g0,hs
+" Suffixes that get lower priority when doing tab completion for filenames.
+" These are files we are not likely to want to edit or read.
+set suffixes=.bak,~,.swp,.o,.info,.aux,.log,.dvi,.bbl,.blg,.brf,.cb,.ind,.idx,.ilg,.inx,.out,.toc
+"Show tabs and trailing whitespace using light markers
+set listchars=tab:└─,trail:∙
+set list
+"Set to have a slightly different background in columns 80 and starting at 120
+let &colorcolumn="80,120,121"
+
+" Setting up Vundle - the vim plugin bundler
 filetype off                  " required for vundle
 let iCanHazVundle=1
 let vundle_readme=expand('~/.vim/bundle/vundle/README.md')
@@ -33,57 +64,15 @@ Bundle 'klen/python-mode'
 Bundle 'hdima/python-syntax'
 Bundle 'majutsushi/tagbar'
 Bundle 'nathanaelkane/vim-indent-guides'
-"Bundle 'perdirvimrc--Autoload-vimrc-files-per-di'
-Bundle 'bogado/file-line'
+Bundle 'tpope/vim-abolish'
 if iCanHazVundle == 0
     echo "Installing Bundles, please ignore key map error messages"
     echo ""
     :BundleInstall
 endif
-" Setting up Vundle - the vim plugin bundler end
-
-" Configuration file for vim
-set encoding=utf-8
-au GUIEnter * set columns=117 lines=40
-set modeline
-set mousemodel=popup_setpos
-set mouse=a
-set viminfo=%,'20,<50,h
-set backspace=indent,eol,start	" more powerful backspacing
-set textwidth=0		 " Don't wrap words by default
-set nobackup		 " Don't keep a backup file
-set viminfo='20,\"50	 " read/write a .viminfo file, don't store more than 50 lines of registers
-set history=50		 " keep 50 lines of command line history
-set switchbuf=useopen,usetab,newtab
-set showcmd		 " Show (partial) command in status line.
-set showmatch		 " Show matching brackets.
-set ignorecase smartcase " Do case insensitive matching unless pattern contains upper case letters
-set incsearch		 " Incremental search
-set autowrite            " Automatically save before commands like :next and :make
-set diffopt+=iwhite,vertical
-set wildmenu wildmode=longest,list
-set autoindent expandtab shiftwidth=2 softtabstop=2 cino=g0,hs
-autocmd FileType python setlocal shiftwidth=2 softtabstop=2
-" Suffixes that get lower priority when doing tab completion for filenames.
-" These are files we are not likely to want to edit or read.
-set suffixes=.bak,~,.swp,.o,.info,.aux,.log,.dvi,.bbl,.blg,.brf,.cb,.ind,.idx,.ilg,.inx,.out,.toc
-"Show tabs and trailing whitespace using light markers
-set listchars=tab:└─,trail:∙
-set list
-"Set to have a slightly different background in columns 80 and starting at 120
-let &colorcolumn="80,120,121"
-
-if isdirectory("/mnt/scratch")
-    set directory=/mnt/scratch/ritter/tmp//
-    if !isdirectory("/mnt/scratch/ritter/tmp")
-        call mkdir("/mnt/scratch/ritter/tmp", "p")
-    endif
-else
-    set dir=~/.vim/tmp//	" Put swapfiles in vim dir
-endif
-
 filetype plugin indent on
 syntax on
+" Setting up Vundle - the vim plugin bundler end
 
 "syntastic
 let g:syntastic_aggregate_errors = 1
@@ -106,9 +95,8 @@ let g:syntastic_python_python_exec = 'python3'
 "YouCompleteME
 let g:ycm_python_binary_path = '/usr/bin/python3'
 let g:ycm_global_ycm_extra_conf = '~/.vim/ycm_conf.py'
-let g:ycm_extra_conf_globlist = [resolve(expand('~/basf2/')) . '*', resolve(expand('~/belle/')) . '*']
+let g:ycm_extra_conf_globlist = [resolve(expand('~/belle/')) . '*']
 "let g:ycm_extra_conf_vim_data = ['b:syntastic_cpp_cflags']
-
 
 "vim airline
 set t_Co=16
