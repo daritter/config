@@ -72,7 +72,6 @@ if iCanHazVundle == 0
 endif
 filetype plugin indent on
 syntax on
-" Setting up Vundle - the vim plugin bundler end
 
 "syntastic
 let g:syntastic_aggregate_errors = 1
@@ -97,6 +96,8 @@ let g:ycm_python_binary_path = '/usr/bin/python3'
 let g:ycm_global_ycm_extra_conf = '~/.vim/ycm_conf.py'
 let g:ycm_extra_conf_globlist = [resolve(expand('~/belle/')) . '*']
 "let g:ycm_extra_conf_vim_data = ['b:syntastic_cpp_cflags']
+" Apply YCM FixIt
+map <F9> :YcmCompleter FixIt<CR>
 
 "vim airline
 set t_Co=16

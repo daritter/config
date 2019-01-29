@@ -1,25 +1,29 @@
+ControlMaster auto
+ControlPath ~/.ssh/control-%r@%h:%p
+ControlPersist 10m
+TCPKeepAlive yes
+ServerAliveInterval 20
+# Forward SSH Key Agent, this allows to log back into home machines using
+# your local private key
+ForwardAgent yes
+# X11 is overrated
+ForwardX11 no
+ForwardX11Trusted no
+# numbers are not important
+CheckHostIP no
+# always run compression
+Compression yes
+
 # Generic mpp connection, works as 'ssh mpp', 'scp mpp:..' and so forth
 Host mpp
-    User ritter
-    # hostname to use when "ssh mpp"
     HostName pcbelle15.mpp.mpg.de
     ForwardX11 yes
     ForwardX11Trusted yes
-    # use control hub. This will send all additional connections to mpp through
-    # the same socket so no additional connection needs to be established
-    ControlMaster auto
-    ControlPath /tmp/%u-ssh-%r@%h:%p
-    # The connection will also be kept alive for 10 minutes after the last
-    # session disconnected for reuse
-    ControlPersist 600
-    TCPKeepAlive yes
-    ServerAliveInterval 20
 
 # use with autossh -M 0 -f -- ssh -fN reverse-lmu-mpp to create reverse ssh
 # tunnel to connect back to lmu
 Host reverse-lmu-mpp
     Hostname 138.246.99.233
-    User ritter
     ConnectionAttempts 3
     TCPKeepAlive no
     PasswordAuthentication no
@@ -32,20 +36,12 @@ Host reverse-lmu-mpp
 
 Host kuhrios
     Hostname 138.246.99.233
-    User ritter
     ForwardX11 yes
     ForwardX11Trusted yes
-    TCPKeepAlive yes
-    ServerAliveInterval 20
 
 Host lmu
-    User ritter
     Hostname localhost
     Port 22001
-    ControlMaster auto
-    ControlPath /tmp/%u-ssh-%r@%h:%p
-    ControlPersist 600
-    CheckHostIP no
     ForwardX11 yes
     ForwardX11Trusted yes
     Compression yes
@@ -55,125 +51,40 @@ Host lmu
 Host c2pap
     User ru75gog2
     Hostname c2paplogin.lrz.de
-    ControlMaster auto
-    ControlPath /tmp/%u-ssh-%r@%h:%p
-    ControlPersist 600
-    CheckHostIP no
     ForwardX11 yes
     ForwardX11Trusted yes
-    Ciphers arcfour
-    # connect using mpp as proxy
-    #ProxyCommand ssh lmu -W %h:%p
-
-Host proton
-    User ritter
-    Hostname 10.155.59.111
-    CheckHostIP no
-    ForwardX11 yes
-    ForwardX11Trusted yes
-
-Host kek
-    User ritter
-    Hostname login.cc.kek.jp
-    # use control hub to use only one ssh channel for all kekcc connections
-    ControlMaster auto
-    ControlPath /tmp/%u-ssh-%r@%h:%p
-    ControlPersist 600
-    #Use fast encryption algorithms
-    Ciphers arcfour
-    CheckHostIP no
-    #Forward SSH Key Agent, this allows to log back into home machines using
-    #your local private key
-    ForwardAgent yes
-    #No X11 to Japan
-    ForwardX11 no
-    ForwardX11Trusted no
-    # But Compression would be nice
-    Compression yes
-    # try to keep the connection alive
-    ServerAliveInterval 60
     ProxyCommand ssh kuhrios -W %h:%p
 
-#Settings for internal machines
-Host pcbelle* pcilc* pxdtest* iuno bellona
-    MACs umac-64@openssh.com
-    Ciphers arcfour
-    ForwardAgent yes
-    #Yes, we want X11 Forwarding
+Host proton
+    Hostname 10.155.59.111
     ForwardX11 yes
     ForwardX11Trusted yes
-    #But compression is not really necessary inhouse
-    Compression no
 
-# settings for dhe machnines
-Host adorea
-    ControlMaster auto
-    ControlPath /tmp/%u-ssh-%r@%h:%p
-    ControlPersist 600
-    User hybrid5
-    HostName adorea.hll.mpg.de
-    # faster cipher
-    MACs umac-64@openssh.com
-    Ciphers arcfour
-    # and use compression
-    Compression yes
-    # connect using mpp as proxy
-    ProxyCommand ssh mpp -W %h:%p
+# disable proxy in the one network we have direct access
+Match Originalhost kek Exec "iwgetid | grep tsubaki-III"
+     ProxyCommand none
 
-Host bellona
-    User depfet
+Host kek
+    Hostname login.cc.kek.jp
+    ProxyCommand ssh kuhrios -W %h:%p
 
-Host pxdtest1
-    User hybrid5
-    HostName pxdtest1.mpp.mpg.de
-
-Host pxdtest2 pxdtest3 pxdtest4 iuno bellona
-    User hybrid5
-    # connect using betria as proxy
-    ProxyCommand ssh adorea -W %h:%p
-
-Host b2stash
-    User git
-    HostName stash.desy.de
-    Port 7999
+Host stash.kuhrios
+    Hostname stash.desy.de
+    ProxyCommand ssh kuhrios -W %h:%p
 
 Host b2-master
     User b2soft
     HostName b2-master.belle2.org
     ProxyCommand ssh bastion.desy.de -W %h:%p
 
-Host bastion.desy.de
-    User ritter
-    # use control hub to use only one ssh channel for all kekcc connections
-    ControlMaster auto
-    ControlPath /tmp/%u-ssh-%r@%h:%p
-    ControlPersist 600
-    #Use fast encryption algorithms
-    Ciphers arcfour
-    CheckHostIP no
-    #Forward SSH Key Agent, this allows to log back into MPI machines using
-    #your local private key
-    ForwardAgent yes
-    #No X11 to Japan
-    ForwardX11 no
-    ForwardX11Trusted no
-    # But Compression would be nice
-    Compression yes
+Host b2-elog2
+    User root
+    HostName b2-elog2.desy.de
+    ProxyCommand ssh bastion.desy.de -W %h:%p
 
 Host naf
-    HostName nafhh-belle01.desy.de
-    User ritter
-    # use control hub to use only one ssh channel for all kekcc connections
-    ControlMaster auto
-    ControlPath ~/.ssh/ssh-%r@%h:%p.control
-    ControlPersist 600
-    Ciphers arcfour
-    CheckHostIP no
-    #Forward SSH Key Agent, this allows to log back into MPI machines using
-    #your local private key
-    ForwardAgent yes
-    ForwardX11 no
-    ForwardX11Trusted no
-    # But Compression would be nice
-    Compression yes
-    CheckHostIP no
+    HostName naf-belle12.desy.de
+
+Host cip
+    HostName habicht.cip.physik.uni-muenchen.de
+    User Martin.Ritter

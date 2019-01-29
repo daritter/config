@@ -8,7 +8,7 @@ flags = [
     '-Wno-variadic-macros',
     '-fexceptions',
     '-x', 'c++',
-    '-std=c++14',
+    '-std=c++17',
     '-nostdinc++',
 ]
 includes = []

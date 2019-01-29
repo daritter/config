@@ -97,7 +97,7 @@ if ! shopt -oq posix; then
 fi
 
 # enable texlive distribution and check more than one directory
-for TEXLIVE in ~/local/texlive /usr/local/texlive/2016 /usr/local/texlive/2015; do
+for TEXLIVE in ~/local/texlive /usr/local/texlive/2017 /usr/local/texlive/2016 /usr/local/texlive/2015; do
     if [ -d $TEXLIVE ]; then
         prepend_path PATH $TEXLIVE/bin/x86_64-linux
         export TEXLIVE
