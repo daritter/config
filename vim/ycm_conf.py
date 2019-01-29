@@ -6,6 +6,8 @@ flags = [
     '-Wno-exit-time-destructors',
     '-Wno-long-long',
     '-Wno-variadic-macros',
+#    '-Wno-reserved-id-macro',
+#    '-Wno-c++98-compat-pedantic',
     '-fexceptions',
     '-x', 'c++',
     '-std=c++17',
@@ -34,12 +36,12 @@ if not b2dir:
 else:
     b2ext = os.environ["BELLE2_EXTERNALS_DIR"]
     extinc = os.path.join(b2ext, "include")
-    includes.append(extinc)
+    flags.append("-isystem%s" % extinc)
     for dir, dirs, files in os.walk(extinc):
         for d in dirs:
             if d in ["Vc", "pqxx"]:
                 continue
-            includes.append(os.path.join(extinc, d))
+            flags.append("-isystem%s" % os.path.join(extinc, d))
         del dirs[:]
 
 

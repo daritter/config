@@ -12,10 +12,11 @@
     doxygen = ! git diff --cached --quiet || check_doxygen_warnings `git diff --cached --name-only`
     outgoing = log @{upstream}..
     diff-outgoing = diff @{upstream}..
+    obsolete-branches = ! git branch -vv | grep ': gone]' | awk '{print $1}'
 [svn]
     rmdir = true
 [merge]
-	tool = gvimdiff
-	conflictstyle = diff3
+    tool = gvimdiff
+    conflictstyle = diff3
 [diff]
-	indentHeuristic = true
+    indentHeuristic = true
