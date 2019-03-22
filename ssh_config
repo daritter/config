@@ -6,9 +6,6 @@ ServerAliveInterval 20
 # Forward SSH Key Agent, this allows to log back into home machines using
 # your local private key
 ForwardAgent yes
-# X11 is overrated
-ForwardX11 no
-ForwardX11Trusted no
 # numbers are not important
 CheckHostIP no
 # always run compression
