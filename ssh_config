@@ -37,8 +37,7 @@ Host kuhrios
     ForwardX11Trusted yes
 
 Host lmu
-    Hostname localhost
-    Port 22001
+    Hostname 10.155.59.111
     ForwardX11 yes
     ForwardX11Trusted yes
     Compression yes
@@ -52,8 +51,7 @@ Host c2pap
     ForwardX11Trusted yes
     ProxyCommand ssh kuhrios -W %h:%p
 
-Host proton
-    Hostname 10.155.59.111
+Host agkuhr*
     ForwardX11 yes
     ForwardX11Trusted yes
 
@@ -72,12 +70,7 @@ Host stash.kuhrios
 Host b2-master
     User b2soft
     HostName b2-master.belle2.org
-    ProxyCommand ssh bastion.desy.de -W %h:%p
-
-Host b2-elog2
-    User root
-    HostName b2-elog2.desy.de
-    ProxyCommand ssh bastion.desy.de -W %h:%p
+    ProxyCommand ssh naf -W %h:%p
 
 Host naf
     HostName naf-belle12.desy.de
