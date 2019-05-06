@@ -15,26 +15,9 @@ BELLE2_LOCAL_DIR=`dirname $BASH_SOURCE`
 pushd $BELLE2_LOCAL_DIR > /dev/null
 #Let's open the tool box
 source ../tools/b2setup.sh
-#Debug mode is for loosers and people with to much cpu power
-b2code-option opt
 
 #Make sure that there are no duplicates in path variables
 #Optionally, the arguments 2 and 3 are prepended and appended respectively for
-#use with append_path and prepend_path
-function clean_path (){
-    eval OLD_PATH=\$$1
-    #This line is kind of long and awkward ...
-    NEW_PATH=`echo "$2$OLD_PATH$3" | awk -F: '{for (i=1;i<=NF;i++) { if ( !x[$i]++ ) { if(i>1) printf(":"); printf("%s",$i); }}}'`
-    export $1=$NEW_PATH
-}
-#Append value to path variable and remove duplicates
-function append_path (){
-    clean_path $1 "" :$2
-}
-#Prepend value to path variable and remove duplicates
-function prepend_path (){
-    clean_path $1 $2: ""
-}
 
 # if [ -n $BELLE2_DISTCC ] && [ -f /usr/bin/distcc ]; then
     # mkdir -p $BELLE2_LOCAL_DIR/bin/distcc
@@ -61,9 +44,9 @@ if hash ccache 2>/dev/null; then
   export BELLE2_USE_CCACHE=yes
 fi
 
-#Now let's remove the useless file catalog things and database caches
-find -name Belle2FileCatalog.xml -delete
-find -name centraldb -exec rm -fr {} +
+# Now let's remove the useless file catalog things and database caches
+# find -name Belle2FileCatalog.xml -delete
+# find -name centraldb -exec rm -fr {} +
 
 #Done here, go back home
 popd > /dev/null
@@ -71,5 +54,5 @@ popd > /dev/null
 alias scons="scons -DQ"
 alias bcd="cd $BELLE2_LOCAL_DIR"
 
-#Make prompt more colorfulc and add b2 option
-export PS1='\[\e]0;[B2:${BELLE2_OPTION}] \h: \w\a\]\t [\[\033[0;32m\]\h\[\033[0m\]:\w]\$ '
+#Make prompt more colorful and add b2 option
+export PROMPT_END="▸"
