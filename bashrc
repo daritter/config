@@ -57,18 +57,19 @@ function prompt_command () {
 PROMPT_DIRTRIM=3
 PROMPT_END='$'
 PROMPT_INFO='\w'
+PROMPT_USER=''
 if [ -n "$SSH_CLIENT" ] || [ -n "$SSH_TTY" ] || [ -n "$SSH_CONNECTION" ]; then
   PROMPT_INFO="\h:\w"
-  if [ $(whoami) != 'ritter' ]; then
-    PROMPT_INFO="\u@\h:\w"
-  fi
 fi
-PS1="\[\e[1;90m\][$PROMPT_INFO]\$PROMPT_END\[\e[0m\] "
+if [ $(whoami) != 'ritter' ]; then
+  PROMPT_USER="\u@"
+fi
+PS1="\[\e[1;90m\][$PROMPT_USER$PROMPT_INFO]\$PROMPT_END\[\e[0m\] "
 
 case "$TERM" in
 xterm*|rxvt*)
     PROMPT_COMMAND="prompt_command"
-    PS1="\[\e]0;$PROMPT_INFO\$PROMPT_END\a\]$PS1"
+    PS1="\[\e]0;$PROMPT_USER\h:\w \$PROMPT_END\a\]$PS1"
     ;;
 *)
     ;;
@@ -104,15 +105,6 @@ if ! shopt -oq posix; then
     . /etc/bash_completion
   fi
 fi
-
-# enable texlive distribution and check more than one directory
-for TEXLIVE in ~/local/texlive /usr/local/texlive/2017 /usr/local/texlive/2016 /usr/local/texlive/2015; do
-    if [ -d $TEXLIVE ]; then
-        prepend_path PATH $TEXLIVE/bin/x86_64-linux
-        export TEXLIVE
-        break;
-    fi
-done
 
 alias vnc='xtightvncviewer -encodings "copyrect tight hextile zlib corre rre raw"'
 alias belle2=". ~/belle2/software/setup.sh"
