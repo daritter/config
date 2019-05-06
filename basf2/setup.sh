@@ -3,6 +3,7 @@ export BELLE2_NO_TOOLS_CHECK=true
 #... unless we want to of course
 if [ "$1" == "check" ]; then
     unset BELLE2_NO_TOOLS_CHECK
+    shift
 fi
 
 export BELLE2_BACKGROUND_DIR=~/belle2/bkg/

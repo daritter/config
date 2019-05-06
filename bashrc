@@ -55,11 +55,20 @@ function prompt_command () {
 }
 
 PROMPT_DIRTRIM=3
-PS1='\t [\h:\w]\$ '
+PROMPT_END='$'
+PROMPT_INFO='\w'
+if [ -n "$SSH_CLIENT" ] || [ -n "$SSH_TTY" ] || [ -n "$SSH_CONNECTION" ]; then
+  PROMPT_INFO="\h:\w"
+  if [ $(whoami) != 'ritter' ]; then
+    PROMPT_INFO="\u@\h:\w"
+  fi
+fi
+PS1="\[\e[1;90m\][$PROMPT_INFO]\$PROMPT_END\[\e[0m\] "
+
 case "$TERM" in
 xterm*|rxvt*)
     PROMPT_COMMAND="prompt_command"
-    PS1="\[\e]0;${SETUP}\u@\h: \w\a\]$PS1"
+    PS1="\[\e]0;$PROMPT_INFO\$PROMPT_END\a\]$PS1"
     ;;
 *)
     ;;
@@ -125,23 +134,5 @@ icon = (ret==0) and "dialog-information" or "dialog-error"
 Notify.init("alert")
 n = Notify.Notification.new("Command "+ title, cmd, icon)
 n.show()
-EOT
-}
-
-function alert_me(){
-  python3 <<EOT
-import requests
-import re
-url="https://belle2.hipchat.com/v2/user/@ritter/message?auth_token=V9cpMdaln493s72oVb1O5JheR0gW8Tq2gtskq4uR"
-headers={'content-type': "application/json"}
-#returncode
-ret = $?
-#get last command name, replacing ' with \'
-cmd = '$(history 1 | sed "s/'/\\\\'/g")'
-#replace the entry number at the beginning and the alert command at the end
-cmd = re.sub("^\\s*\\d+\\s*|\\s*(;|&&|\\|\\|)\\s*alert_me\\s*$","", cmd)
-title = "finished" if (ret==0) else ("failed (%d)" % ret)
-icon = "(successful)" if (ret==0) else "(failed)"
-requests.post(url, json={"notify":True, "message":"%s %s %s" % (icon, cmd, title)}, headers=headers)
 EOT
 }
