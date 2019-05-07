@@ -6,8 +6,8 @@
 [rebase]
     autoStash = true
 [alias]
-    fixstyle = ! git diff --cached --name-status | cut -f2- | xargs fixstyle
-    checkstyle = ! git diff --cached --quiet || checkstyle `git diff --cached --name-only`
+    fixstyle = ! git diff --cached --quiet || b2code-style-fix `git diff --cached --name-only`
+    checkstyle = ! git diff --cached --quiet || b2code-style-check `git diff --cached --name-only`
     wdiff = diff --color-words
     doxygen = ! git diff --cached --quiet || check_doxygen_warnings `git diff --cached --name-only`
     outgoing = log @{upstream}..
