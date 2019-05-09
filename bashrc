@@ -59,12 +59,12 @@ PROMPT_END='$'
 PROMPT_INFO='\w'
 PROMPT_USER=''
 if [ -n "$SSH_CLIENT" ] || [ -n "$SSH_TTY" ] || [ -n "$SSH_CONNECTION" ]; then
-  PROMPT_INFO="\h:\w"
+  PROMPT_INFO="\[\e[32m\]\h\[\e[39;1;23m\]:\w"
 fi
 if [ $(whoami) != 'ritter' ]; then
   PROMPT_USER="\u@"
 fi
-PS1="\[\e[1;90m\][$PROMPT_USER$PROMPT_INFO]\$PROMPT_END\[\e[0m\] "
+PS1="\[\e[1m\][$PROMPT_USER$PROMPT_INFO]\$PROMPT_END\[\e[0m\] "
 
 case "$TERM" in
 xterm*|rxvt*)
