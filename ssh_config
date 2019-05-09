@@ -1,16 +1,3 @@
-ControlMaster auto
-ControlPath ~/.ssh/control-%r@%h:%p
-ControlPersist 10m
-TCPKeepAlive yes
-ServerAliveInterval 20
-# Forward SSH Key Agent, this allows to log back into home machines using
-# your local private key
-ForwardAgent yes
-# numbers are not important
-CheckHostIP no
-# always run compression
-Compression yes
-
 # Generic mpp connection, works as 'ssh mpp', 'scp mpp:..' and so forth
 Host mpp
     HostName pcbelle15.mpp.mpg.de
@@ -36,19 +23,17 @@ Host kuhrios
     ForwardX11 yes
     ForwardX11Trusted yes
 
+Host kuhrios-vscode
+    Hostname 138.246.99.233
+    ControlPath ~/.ssh/control-%r@%h-vscode:%p
+    IdentityFile ~/.ssh/id_vscode
+
 Host lmu
     Hostname 10.155.59.111
     ForwardX11 yes
     ForwardX11Trusted yes
     Compression yes
     # connect using mpp as proxy
-    ProxyCommand ssh kuhrios -W %h:%p
-
-Host c2pap
-    User ru75gog2
-    Hostname c2paplogin.lrz.de
-    ForwardX11 yes
-    ForwardX11Trusted yes
     ProxyCommand ssh kuhrios -W %h:%p
 
 Host agkuhr*
@@ -63,10 +48,6 @@ Host kek
     Hostname login.cc.kek.jp
     ProxyCommand ssh kuhrios -W %h:%p
 
-Host stash.kuhrios
-    Hostname stash.desy.de
-    ProxyCommand ssh kuhrios -W %h:%p
-
 Host b2-master
     User b2soft
     HostName b2-master.belle2.org
@@ -78,3 +59,17 @@ Host naf
 Host cip
     HostName habicht.cip.physik.uni-muenchen.de
     User Martin.Ritter
+
+Host *
+    ControlMaster auto
+    ControlPath ~/.ssh/control-%r@%h:%p
+    ControlPersist 10m
+    TCPKeepAlive yes
+    ServerAliveInterval 20
+    # Forward SSH Key Agent, this allows to log back into home machines using
+    # your local private key
+    ForwardAgent yes
+    # numbers are not important
+    CheckHostIP no
+    # always run compression
+    Compression yes

@@ -1,3 +1,9 @@
+# If we want to setup belle2 right away
+if [ "$SETUP_BELLE2" = "yes" ]; then
+  . ~/belle2/software/setup.sh
+  bcd
+fi
+
 # If not running interactively, don't do anything
 case $- in
     *i*) ;;
