@@ -7,6 +7,8 @@ if [ "$1" == "check" ]; then
 fi
 
 export BELLE2_BACKGROUND_DIR=~/belle2/bkg/
+export BELLE2_DISABLE_COMPILER_WARNINGS="daq testbeam eutel generators/phokhara/eemmg-lib genfit2/code2"
+
 export GIT_AUTHOR_EMAIL=martin.ritter@desy.de
 
 # Find out where we want to be
